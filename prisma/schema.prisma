@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Klasa {
+  id     String @id @default(cuid())
+  nazwa  String @unique
+
+  dzialy  Dzial[]
+  zadania Zadanie[]
+}
+
+model Dzial {
+  id      String @id @default(cuid())
+  nazwa   String
+
+  klasaId String
+  klasa   Klasa @relation(fields: [klasaId], references: [id])
+
+  tematy  Temat[]
+  zadania Zadanie[]
+}
+
+model Temat {
+  id      String @id @default(cuid())
+  nazwa   String
+
+  dzialId String
+  dzial   Dzial @relation(fields: [dzialId], references: [id])
+
+  zadania Zadanie[]
+}
+
+model Zadanie {
+  id String @id @default(cuid())
+
+  klasaId String
+  klasa   Klasa @relation(fields: [klasaId], references: [id])
+
+  dzialId String
+  dzial   Dzial @relation(fields: [dzialId], references: [id])
+
+  tematId String
+  temat   Temat @relation(fields: [tematId], references: [id])
+
+  typ String
+
+  poziom Int
+
+  punkty Int
+
+  czas Int
+
+  tresc Json
+
+  odpowiedz Json
+
+  rozwiazanie Json
+
+  tagi String[]
+
+  aktywne Boolean @default(true)
+
+  autor String
+
+  createdAt DateTime @default(now())
+
+  updatedAt DateTime @updatedAt
+}

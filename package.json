@@ -1,0 +1,39 @@
+{
+  "name": "edunga",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "seed": "tsx prisma/seed.ts",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.3",
+    "@tiptap/pm": "^3.27.1",
+    "@tiptap/react": "^3.27.1",
+    "@tiptap/starter-kit": "^3.27.1",
+    "katex": "^0.17.0",
+    "lucide-react": "^1.21.0",
+    "mathlive": "^0.110.0",
+    "next": "16.2.9",
+    "pg": "^8.22.0",
+    "prisma": "^6.16.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-katex": "^3.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-katex": "^3.0.4",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "tailwindcss": "^4",
+    "tsx": "^4.22.4",
+    "typescript": "^5"
+  }
+}
