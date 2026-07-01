@@ -1,20 +1,7 @@
-import MathEditor from "./MathEditor";
+"use client";
 
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
-};
+import Editor from "../editor2/Editor";
 
-export default function SolutionEditor({
-  value,
-  onChange,
-}: Props) {
-  return (
-    <MathEditor
-      label="Rozwiązanie"
-      placeholder="Wpisz rozwiązanie..."
-      value={value}
-      onChange={onChange}
-    />
-  );
+export default function SolutionEditor() {
+  return <Editor />;
 }

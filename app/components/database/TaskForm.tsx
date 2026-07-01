@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { ParagraphModel } from "../editor/render/DocumentRenderer";
+
 import TaskEditor from "./TaskEditor";
 import SolutionEditor from "./SolutionEditor";
 import ShortAnswer from "./ShortAnswer";
@@ -21,9 +23,29 @@ export default function TaskForm() {
   const [punkty, setPunkty] = useState("");
   const [czas, setCzas] = useState("");
 
-  const [tresc, setTresc] = useState("");
-  const [rozwiazanie, setRozwiazanie] = useState("");
-  const [odpowiedz, setOdpowiedz] = useState("");
+  function createDocument(): ParagraphModel[] {
+    return [
+      {
+        id: crypto.randomUUID(),
+        nodes: [
+          {
+            id: crypto.randomUUID(),
+            type: "text",
+            text: "",
+          },
+        ],
+      },
+    ];
+  }
+
+  const [tresc, setTresc] =
+    useState<ParagraphModel[]>(createDocument());
+
+  const [rozwiazanie, setRozwiazanie] =
+    useState<ParagraphModel[]>(createDocument());
+
+  const [odpowiedz, setOdpowiedz] =
+    useState<ParagraphModel[]>(createDocument());
 
   const dzialyKlasy = dzialy.filter(
     (d) => d.klasaId === klasaId
@@ -39,7 +61,6 @@ export default function TaskForm() {
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify({
         klasaId,
         dzialId,
@@ -52,10 +73,8 @@ export default function TaskForm() {
         czas: Number(czas),
 
         tresc,
-
-        odpowiedz,
-
         rozwiazanie,
+        odpowiedz,
 
         tagi: [],
       }),
@@ -71,7 +90,6 @@ export default function TaskForm() {
 
   return (
     <div className="rounded-xl bg-[#1E2128] p-6">
-
       <h1 className="mb-6 text-4xl font-bold text-white">
         Nowe zadanie
       </h1>
@@ -159,7 +177,8 @@ export default function TaskForm() {
             <option value="4">★★★★☆</option>
             <option value="5">★★★★★</option>
           </select>
-                    <input
+
+          <input
             type="number"
             value={punkty}
             onChange={(e) => setPunkty(e.target.value)}

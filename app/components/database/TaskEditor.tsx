@@ -1,20 +1,7 @@
-import MathEditor from "./MathEditor";
+"use client";
 
-type Props = {
-  value: string;
-  onChange: (value: string) => void;
-};
+import Editor from "../editor2/Editor";
 
-export default function TaskEditor({
-  value,
-  onChange,
-}: Props) {
-  return (
-    <MathEditor
-      label="Treść zadania"
-      placeholder="Wpisz treść zadania..."
-      value={value}
-      onChange={onChange}
-    />
-  );
+export default function TaskEditor() {
+  return <Editor />;
 }

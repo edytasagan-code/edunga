@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import MathViewer from "./MathViewer";
 
 type Zadanie = {
@@ -14,6 +13,8 @@ type Zadanie = {
   punkty: number;
   czas: number;
   tresc: unknown;
+  odpowiedz?: string;
+  rozwiazanie?: unknown;
 };
 
 export default function TaskTable() {
@@ -22,15 +23,33 @@ export default function TaskTable() {
 
   useEffect(() => {
     async function load() {
-      const res = await fetch("/api/zadania");
-      const data = await res.json();
+      try {
+        const res = await fetch("/api/zadania");
+        const data = await res.json();
 
-      setZadania(data);
-      setLoading(false);
+        setZadania(data);
+      } finally {
+        setLoading(false);
+      }
     }
 
     load();
   }, []);
+
+  async function usun(id: string) {
+    if (!confirm("Usunąć zadanie?")) return;
+
+    const res = await fetch(`/api/zadania/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      alert("Nie udało się usunąć zadania.");
+      return;
+    }
+
+    setZadania((prev) => prev.filter((z) => z.id !== id));
+  }
 
   if (loading) {
     return (
@@ -41,124 +60,93 @@ export default function TaskTable() {
   }
 
   return (
-    <div className="rounded-xl bg-[#1E2128] p-6">
+    <div className="space-y-5">
 
-      <h1 className="mb-6 text-4xl font-bold text-white">
+      <h1 className="text-4xl font-bold text-white">
         Baza zadań
       </h1>
 
-      <div className="overflow-x-auto">
+      {zadania.map((z) => (
 
-        <table className="w-full text-white">
+        <div
+          key={z.id}
+          className="rounded-xl border border-zinc-700 bg-[#1E2128] p-6"
+        >
 
-          <thead>
+          <div className="mb-5 flex flex-wrap gap-2">
 
-            <tr className="border-b border-zinc-700">
+            <span className="rounded bg-zinc-700 px-3 py-1 text-sm">
+              {z.klasaId}
+            </span>
 
-              <th className="w-24 p-3 text-left">
-                Klasa
-              </th>
+            <span className="rounded bg-zinc-700 px-3 py-1 text-sm">
+              {z.dzialId}
+            </span>
 
-              <th className="w-56 p-3 text-left">
-                Dział
-              </th>
+            <span className="rounded bg-blue-700 px-3 py-1 text-sm">
+              {z.typ}
+            </span>
 
-              <th className="w-[600px] p-3 text-left">
-                Treść zadania
-              </th>
+            <span className="rounded bg-yellow-500 px-3 py-1 text-sm text-black">
+              ★ {z.poziom}
+            </span>
 
-              <th className="w-32 p-3 text-left">
-                Typ
-              </th>
+            <span className="rounded bg-green-700 px-3 py-1 text-sm">
+              {z.punkty} pkt
+            </span>
 
-              <th className="w-20 p-3 text-center">
-                Poziom
-              </th>
+            <span className="rounded bg-purple-700 px-3 py-1 text-sm">
+              {z.czas} min
+            </span>
 
-              <th className="w-20 p-3 text-center">
-                Pkt
-              </th>
+          </div>
 
-              <th className="w-20 p-3 text-center">
-                Min
-              </th>
+          <div className="mb-6 break-words text-lg leading-8">
 
-              <th className="w-36 p-3 text-center">
-                Akcje
-              </th>
+            <MathViewer value={z.tresc} />
 
-            </tr>
+          </div>
 
-          </thead>
+          {z.odpowiedz && (
 
-          <tbody>
+            <div className="mb-6 rounded-lg bg-zinc-900 p-4">
 
-            {zadania.map((z) => (
+              <div className="mb-2 font-semibold text-yellow-400">
+                Odpowiedź
+              </div>
 
-              <tr
-                key={z.id}
-                className="border-b border-zinc-800 hover:bg-zinc-800"
-              >
+              {z.odpowiedz}
 
-                <td className="p-3">
-                  {z.klasaId}
-                </td>
+            </div>
 
-                <td className="p-3">
-                  {z.dzialId}
-                </td>
+          )}
 
-                <td className="max-w-[600px] p-3">
+          <div className="flex gap-3">
 
-                  <div className="line-clamp-2 break-words">
+            <button
+              className="rounded-lg bg-green-600 px-4 py-2 font-semibold hover:bg-green-500"
+            >
+              ✏ Edytuj
+            </button>
 
-                    <MathViewer value={z.tresc} />
+            <button
+              className="rounded-lg bg-sky-600 px-4 py-2 font-semibold hover:bg-sky-500"
+            >
+              📄 Kopiuj
+            </button>
 
-                  </div>
+            <button
+              onClick={() => usun(z.id)}
+              className="rounded-lg bg-red-600 px-4 py-2 font-semibold hover:bg-red-500"
+            >
+              🗑 Usuń
+            </button>
 
-                </td>
+          </div>
 
-                <td className="p-3">
-                  {z.typ}
-                </td>
+        </div>
 
-                <td className="text-center">
-                  {z.poziom}
-                </td>
-
-                <td className="text-center">
-                  {z.punkty}
-                </td>
-
-                <td className="text-center">
-                  {z.czas}
-                </td>
-
-                <td className="space-x-2 text-center">
-
-                  <button className="rounded bg-blue-600 px-3 py-1 hover:bg-blue-500">
-                    👁
-                  </button>
-
-                  <button className="rounded bg-green-600 px-3 py-1 hover:bg-green-500">
-                    ✏
-                  </button>
-
-                  <button className="rounded bg-red-600 px-3 py-1 hover:bg-red-500">
-                    🗑
-                  </button>
-
-                </td>
-
-              </tr>
-
-            ))}
-
-          </tbody>
-
-        </table>
-
-      </div>
+      ))}
 
     </div>
   );
