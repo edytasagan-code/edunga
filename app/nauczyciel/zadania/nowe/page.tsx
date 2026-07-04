@@ -53,54 +53,6 @@ export default function NoweZadaniePage() {
               </div>
 
             </div>
-            <div className="grid grid-cols-2 gap-6">
-
-  <div>
-    <label className="mb-2 block text-zinc-300">
-      Klasa
-    </label>
-
-    <select className="w-full rounded-xl bg-[#1E2128] p-3 text-white">
-      <option>Klasa 1 LO</option>
-      <option>Klasa 2 LO</option>
-      <option>Klasa 3 LO</option>
-      <option>Klasa 4 LO</option>
-      <option>Matura</option>
-    </select>
-  </div>
-
-  <div>
-    <label className="mb-2 block text-zinc-300">
-      Dział
-    </label>
-
-    <select className="w-full rounded-xl bg-[#1E2128] p-3 text-white">
-      <option>Wybierz dział...</option>
-    </select>
-  </div>
-
-  <div>
-    <label className="mb-2 block text-zinc-300">
-      Temat
-    </label>
-
-    <select className="w-full rounded-xl bg-[#1E2128] p-3 text-white">
-      <option>Wybierz temat...</option>
-    </select>
-  </div>
-
-  <div>
-    <label className="mb-2 block text-zinc-300">
-      Punkty
-    </label>
-
-    <input
-      type="number"
-      className="w-full rounded-xl bg-[#1E2128] p-3 text-white"
-    />
-  </div>
-
-</div>
 
           </div>
 

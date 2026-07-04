@@ -1,50 +1,37 @@
-"use client";
+import Link from "next/link";
 
-type Props = {
-  onInsertMath: () => void;
-};
-
-export default function Toolbar({
-  onInsertMath,
-}: Props) {
+export default function Toolbar() {
   return (
-    <div className="flex flex-wrap gap-2 border-b border-zinc-700 bg-zinc-800 p-2">
+    <div className="flex items-center justify-between">
 
-      <button
-        type="button"
-        onClick={onInsertMath}
-        className="rounded border border-zinc-600 px-3 py-1 text-white hover:bg-zinc-700"
-      >
-        ∑
-      </button>
+      <div>
+        <h1 className="text-4xl font-bold text-white">
+          Baza zadań
+        </h1>
 
-      <button
-        type="button"
-        className="rounded border border-zinc-600 px-3 py-1 text-white"
-      >
-        √
-      </button>
+        <p className="mt-2 text-zinc-400">
+          Zarządzaj wszystkimi zadaniami.
+        </p>
+      </div>
 
-      <button
-        type="button"
-        className="rounded border border-zinc-600 px-3 py-1 text-white"
-      >
-        x²
-      </button>
+      <div className="flex gap-3">
 
-      <button
-        type="button"
-        className="rounded border border-zinc-600 px-3 py-1 text-white"
-      >
-        x³
-      </button>
+        <button className="rounded-xl border border-zinc-700 px-5 py-3 text-white hover:border-[#F7B500]">
+          Import
+        </button>
 
-      <button
-        type="button"
-        className="rounded border border-zinc-600 px-3 py-1 text-white"
-      >
-        π
-      </button>
+        <button className="rounded-xl border border-zinc-700 px-5 py-3 text-white hover:border-[#F7B500]">
+          Eksport
+        </button>
+
+        <Link
+          href="/nauczyciel/baza-zadan/nowe"
+          className="rounded-xl bg-[#F7B500] px-6 py-3 font-semibold text-black"
+        >
+          + Dodaj zadanie
+        </Link>
+
+      </div>
 
     </div>
   );

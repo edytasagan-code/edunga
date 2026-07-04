@@ -7,6 +7,7 @@ import {
 import { createEmptyDocument } from "./document";
 import HistoryManager from "./history";
 import SelectionManager from "./selection";
+import insertText from "./operations/insertText";
 
 export type EditorEvent =
   | "change"

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-700 bg-[#1E2128]/90 backdrop-blur">

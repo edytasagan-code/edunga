@@ -1,15 +1,15 @@
 export const klasa1 = [
   {
     id: 1,
-  slug: "zbiory-liczbowe",
+  slug: "zbiory liczbowe. Liczby rzeczywiste",
   nazwa: "Zbiory liczbowe. Liczby rzeczywiste",
 tematy: [
   {
-    slug: "zbior-dzialania",
+    slug: "zbiór. Działania na zbiorach",
     nazwa: "Zbiór. Działania na zbiorach",
   },
   {
-    slug: "os-liczbowa",
+    slug: "zbiory liczbowe. Oś liczbowa",
     nazwa: "Zbiory liczbowe. Oś liczbowa",
   },
   {
