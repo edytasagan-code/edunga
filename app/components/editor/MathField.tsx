@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import "mathlive";
-import { setActiveMathField } from "./core/mathEditor";
 
 type Props = {
   value: string;
@@ -19,13 +18,10 @@ export default function MathField({
   onFocus,
   onBlur,
 }: Props) {
-  const ref = useRef<any>(null);
+  const mathfieldRef = useRef<any>(null);
 
   useEffect(() => {
-    const mf = ref.current;
-    mf.addEventListener("focusin", () => {
-  setActiveMathField(mf);
-});
+    const mf = mathfieldRef.current;
 
     if (!mf) return;
 
@@ -43,30 +39,36 @@ export default function MathField({
   }, []);
 
   useEffect(() => {
-    if (ref.current && ref.current.value !== value) {
-      ref.current.value = value;
+    const mf = mathfieldRef.current;
+
+    if (!mf) return;
+
+    if (mf.value !== value) {
+      mf.value = value;
     }
   }, [value]);
 
   useEffect(() => {
     if (autoFocus) {
       requestAnimationFrame(() => {
-        ref.current?.focus();
+        mathfieldRef.current?.focus();
       });
     }
   }, [autoFocus]);
 
   return (
     <math-field
-      ref={ref}
+      ref={mathfieldRef}
       onFocus={onFocus}
       onBlur={onBlur}
       style={{
-        fontSize: "28px",
         minWidth: "40px",
-        outline: "none",
+        minHeight: "36px",
+        fontSize: "28px",
         border: "none",
+        outline: "none",
         background: "transparent",
+        display: "inline-block",
       }}
     />
   );
