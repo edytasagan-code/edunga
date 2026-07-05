@@ -3,19 +3,20 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
 
+import { useMathContext } from "./MathContext";
 
 type Props = {
   value: string;
   onChange: (latex: string) => void;
 };
 
-// Konfiguracja MathLive (wykonywana raz)
-
 export default function MathField({
   value,
   onChange,
 }: Props) {
-  const ref = useRef<MathfieldElement>(null);
+  const ref = useRef<any>(null);
+
+  const { setActiveMathField } = useMathContext();
 
   useEffect(() => {
     const mf = ref.current;
@@ -33,10 +34,22 @@ export default function MathField({
       onChange(mf.value);
     };
 
+    const handleFocus = () => {
+      setActiveMathField(mf);
+    };
+
+    const handleBlur = () => {
+      setActiveMathField(null);
+    };
+
     mf.addEventListener("input", handleInput);
+    mf.addEventListener("focus", handleFocus);
+    mf.addEventListener("blur", handleBlur);
 
     return () => {
       mf.removeEventListener("input", handleInput);
+      mf.removeEventListener("focus", handleFocus);
+      mf.removeEventListener("blur", handleBlur);
     };
   }, []);
 
