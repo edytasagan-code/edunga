@@ -1,63 +1,90 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createDocument } from "./document";
-import { DocumentModel } from "./types";
+import { useEffect } from "react";
+
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+import { MathNode } from "./MathNode";
 
 type Props = {
-  value?: DocumentModel;
-  onChange?: (document: DocumentModel) => void;
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 export default function Editor({
-  value,
+  value = "<p></p>",
   onChange,
 }: Props) {
-  const [document, setDocument] = useState<DocumentModel>(
-    value ?? createDocument()
-  );
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      MathNode,
+    ],
+
+    content: value,
+
+    immediatelyRender: false,
+
+    editorProps: {
+      attributes: {
+        class:
+          "min-h-[350px] p-6 outline-none text-lg text-white",
+      },
+    },
+
+    onUpdate({ editor }) {
+      onChange?.(editor.getHTML());
+    },
+  });
 
   useEffect(() => {
-    onChange?.(document);
-  }, [document, onChange]);
+    if (!editor) return;
+
+    if (editor.getHTML() !== value) {
+      editor.commands.setContent(value, {
+        emitUpdate: false,
+      });
+    }
+  }, [editor, value]);
+
+  if (!editor) return null;
 
   return (
     <div className="rounded-xl border border-zinc-700 bg-zinc-900">
 
-      <div className="border-b border-zinc-700 p-3 text-white font-bold">
-        NOWY ENGINE
+      <div className="flex gap-2 border-b border-zinc-700 bg-zinc-800 p-2">
+
+        <button
+          className="rounded bg-zinc-700 px-3 py-2 hover:bg-zinc-600"
+          onClick={() =>
+            editor.chain().focus().toggleBold().run()
+          }
+        >
+          B
+        </button>
+
+        <button
+          className="rounded bg-zinc-700 px-3 py-2 hover:bg-zinc-600"
+          onClick={() =>
+            editor.chain().focus().toggleItalic().run()
+          }
+        >
+          I
+        </button>
+
+        <button
+          className="rounded bg-blue-600 px-3 py-2 hover:bg-blue-500"
+          onClick={() =>
+            editor.chain().focus().insertMath().run()
+          }
+        >
+          fx
+        </button>
+
       </div>
 
-      <div className="min-h-[300px] p-6 text-white">
-        {document.paragraphs.map((paragraph) => (
-          <div key={paragraph.id} className="mb-2">
-     {paragraph.nodes.map((node) => {
-
-  if (node.type === "text") {
-    return (
-      <span key={node.id}>
-        {node.text || "Start typing..."}
-      </span>
-    );
-  }
-
-  if (node.type === "math") {
-    return (
-      <span
-        key={node.id}
-        className="mx-1 rounded bg-yellow-400 px-2 py-1 text-black"
-      >
-        {node.latex || "□"}
-      </span>
-    );
-  }
-
-  return null;
-
-})}
-          </div>
-        ))}
-      </div>
+      <EditorContent editor={editor} />
 
     </div>
   );
