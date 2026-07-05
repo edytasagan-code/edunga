@@ -3,19 +3,23 @@
 import { useEffect, useRef } from "react";
 import "mathlive";
 
+
 type Props = {
   value: string;
   onChange: (latex: string) => void;
 };
 
+// Konfiguracja MathLive (wykonywana raz)
+
 export default function MathField({
   value,
   onChange,
 }: Props) {
-  const ref = useRef<any>(null);
+  const ref = useRef<MathfieldElement>(null);
 
   useEffect(() => {
     const mf = ref.current;
+
     if (!mf) return;
 
     mf.value = value;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -25,7 +26,19 @@ export default function Editor() {
         spellcheck: "false",
       },
     },
+
+    onUpdate({ editor }) {
+      console.log(
+        JSON.stringify(editor.getJSON(), null, 2)
+      );
+    },
   });
+
+  useEffect(() => {
+    if (!editor) return;
+
+    console.log("Editor ready");
+  }, [editor]);
 
   if (!editor) {
     return null;

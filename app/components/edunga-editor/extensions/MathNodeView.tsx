@@ -19,11 +19,13 @@ export default function MathNodeView({
     >
       <MathField
         value={node.attrs.latex}
-        onChange={(latex) => {
-          updateAttributes({
-            latex,
-          });
-        }}
+       onChange={(latex) => {
+  console.log("LATEX:", latex);
+
+  updateAttributes({
+    latex,
+  });
+}}
       />
     </NodeViewWrapper>
   );
