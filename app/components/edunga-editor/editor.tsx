@@ -5,7 +5,6 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import Toolbar from "./Toolbar";
-import { MathProvider } from "./MathContext";
 import { MathNode } from "./extensions/MathNode";
 
 import "./styles.css";
@@ -46,12 +45,10 @@ export default function Editor() {
   }
 
   return (
-    <MathProvider>
-      <div className="editor-shell">
-        <Toolbar editor={editor} />
+    <div className="editor-shell">
+      <Toolbar editor={editor} />
 
-        <EditorContent editor={editor} />
-      </div>
-    </MathProvider>
+      <EditorContent editor={editor} />
+    </div>
   );
 }
