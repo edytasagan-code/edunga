@@ -6,46 +6,136 @@ type Props = {
   editor: Editor;
 };
 
-export default function Toolbar({ editor }: Props) {
+type ToolbarButtonProps = {
+  children: React.ReactNode;
+  active?: boolean;
+  onClick: () => void;
+};
+
+function ToolbarButton({
+  children,
+  active = false,
+  onClick,
+}: ToolbarButtonProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        padding: 12,
-        background: "#2b2b2b",
-      }}
+    <button
+      type="button"
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={onClick}
+      className={`
+        h-9
+        min-w-9
+        px-3
+        rounded-md
+        border
+        text-sm
+        transition-colors
+        ${
+          active
+            ? "bg-blue-600 text-white border-blue-600"
+            : "bg-white hover:bg-zinc-100 border-zinc-300"
+        }
+      `}
     >
-      <button
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => editor.chain().focus().toggleBold().run()}
+      {children}
+    </button>
+  );
+}
+
+function Separator() {
+  return (
+    <div className="mx-1 h-6 w-px bg-zinc-300" />
+  );
+}
+
+export default function Toolbar({
+  editor,
+}: Props) {
+  return (
+    <div className="flex items-center gap-2 border-b bg-zinc-50 p-2">
+
+      <ToolbarButton
+        active={editor.isActive("bold")}
+        onClick={() =>
+          editor.chain().focus().toggleBold().run()
+        }
       >
-        B
-      </button>
+        <b>B</b>
+      </ToolbarButton>
 
-      <button
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
+      <ToolbarButton
+        active={editor.isActive("italic")}
+        onClick={() =>
+          editor.chain().focus().toggleItalic().run()
+        }
       >
-        I
-      </button>
+        <i>I</i>
+      </ToolbarButton>
 
-      <div
-        style={{
-          width: 1,
-          height: 24,
-          background: "#555",
-          marginInline: 4,
-        }}
-      />
+      <Separator />
 
-      <button
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => editor.commands.insertMath()}
+      <ToolbarButton
+        onClick={() =>
+          editor.commands.insertMath()
+        }
       >
         fx
-      </button>
+      </ToolbarButton>
+
+      <Separator />
+
+      <ToolbarButton onClick={() => {}}>
+        √
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        a/b
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        x²
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        xⁿ
+      </ToolbarButton>
+
+      <Separator />
+
+      <ToolbarButton onClick={() => {}}>
+        π
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        ≤
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        ≥
+      </ToolbarButton>
+
+      <ToolbarButton onClick={() => {}}>
+        ≠
+      </ToolbarButton>
+
+      <Separator />
+
+      <ToolbarButton
+        onClick={() =>
+          editor.chain().focus().undo().run()
+        }
+      >
+        ↶
+      </ToolbarButton>
+
+      <ToolbarButton
+        onClick={() =>
+          editor.chain().focus().redo().run()
+        }
+      >
+        ↷
+      </ToolbarButton>
+
     </div>
   );
 }

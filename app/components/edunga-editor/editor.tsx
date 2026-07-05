@@ -5,6 +5,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import Toolbar from "./Toolbar";
+
 import { MathNode } from "./extensions/MathNode";
 
 import "./styles.css";
@@ -12,9 +13,13 @@ import "./styles.css";
 export default function Editor() {
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      MathNode,
-    ],
+
+StarterKit,
+
+
+MathNode,
+
+],
 
     content: "<p></p>",
 
