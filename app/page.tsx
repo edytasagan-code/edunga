@@ -1,11 +1,5 @@
-import Editor from "@/app/components/edunga-editor/editor";
+import Dashboard from "@/app/components/dashboard/Dashboard";
 
-export default function Home() {
-  return (
-    <main className="min-h-screen bg-zinc-900 p-10">
-      <div className="mx-auto max-w-5xl">
-        <Editor />
-      </div>
-    </main>
-  );
+export default function HomePage() {
+  return <Dashboard />;
 }

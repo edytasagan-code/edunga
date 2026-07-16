@@ -1,0 +1,20 @@
+{
+  "identifier": "12.2",
+  "exerciseKind": "fill_blank",
+  "instruction": "Uzupełnij zdania. Wpisz odpowiednie przedziały w wykropkowanych miejscach, aby zdania były prawdziwe.",
+  "subtasks": [
+    {
+      "label": "1",
+      "text": "Zbiorem wartości funkcji f jest przedział ………………… ."
+    },
+    {
+      "label": "2",
+      "text": "Zbiorem wszystkich argumentów, dla których funkcja f przyjmuje wartości większe od 1, jest przedział ………………… .",
+      "mathElements": ["1"]
+    }
+  ],
+  "answers": [
+    { "label": "1", "value": "[-2, 4]" },
+    { "label": "2", "value": "(-1, 4)" }
+  ]
+}

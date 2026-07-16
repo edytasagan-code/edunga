@@ -1,0 +1,87 @@
+{
+  "fixture": "task-12-fill-intervals",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Uzupełnij zdania. Wpisz odpowiednie przedziały w wykropkowanych miejscach, aby zdania były prawdziwe."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "1. "
+        },
+        {
+          "type": "text",
+          "text": "Zbiorem wartości funkcji f jest przedział "
+        },
+        {
+          "type": "math",
+          "latex": "\\left[\\placeholder{}, \\placeholder{}\\right]"
+        },
+        {
+          "type": "text",
+          "text": " ."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "2. "
+        },
+        {
+          "type": "text",
+          "text": "Zbiorem wszystkich argumentów, dla których funkcja f przyjmuje wartości większe od "
+        },
+        {
+          "type": "math",
+          "latex": "1"
+        },
+        {
+          "type": "text",
+          "text": ", jest przedział "
+        },
+        {
+          "type": "math",
+          "latex": "\\left[\\placeholder{}, \\placeholder{}\\right]"
+        },
+        {
+          "type": "text",
+          "text": " ."
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": ""
+        },
+        {
+          "type": "math",
+          "latex": "\\left[-2,\\,4\\right]"
+        },
+        {
+          "type": "text",
+          "text": "    "
+        },
+        {
+          "type": "math",
+          "latex": "\\left(-1,\\,4\\right)"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

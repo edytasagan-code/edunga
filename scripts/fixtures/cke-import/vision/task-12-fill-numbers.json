@@ -1,0 +1,21 @@
+{
+  "identifier": "12.1",
+  "exerciseKind": "fill_blank",
+  "instruction": "Uzupełnij zdania. Wpisz odpowiednie liczby w wykropkowanych miejscach, aby zdania były prawdziwe.",
+  "subtasks": [
+    {
+      "label": "1",
+      "text": "Rozwiązaniem równania f(x)=3 jest liczba ……… .",
+      "mathElements": ["f(x)=3"]
+    },
+    {
+      "label": "2",
+      "text": "Największa wartość funkcji f w przedziale [2, 3] jest równa ……… .",
+      "mathElements": ["[2, 3]"]
+    }
+  ],
+  "answers": [
+    { "label": "1", "value": "1" },
+    { "label": "2", "value": "4" }
+  ]
+}

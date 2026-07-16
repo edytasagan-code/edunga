@@ -1,0 +1,17 @@
+{
+  "identifier": "5",
+  "exerciseKind": "multiple_choice",
+  "context": "Anna wpłaciła na lokatę kwotę 2000 zł. Oprocentowanie lokaty wynosi 4% w skali roku, a odsetki kapitalizowane są co roku.",
+  "instruction": "Dokończ zadanie. Wybierz właściwą odpowiedź spośród podanych.",
+  "question": "Po dwóch latach oszczędzania na lokacie Anna będzie miała (zgodnie z zaokrągleniem do 1 grosza)",
+  "choices": [
+    { "label": "A", "text": "2081,60 zł" },
+    { "label": "B", "text": "2160,00 zł" },
+    { "label": "C", "text": "2163,20 zł" },
+    { "label": "D", "text": "2240,00 zł" }
+  ],
+  "subtasks": [],
+  "answers": [{ "label": "", "value": "C" }],
+  "correctChoice": "C",
+  "choicesLayout": "inline"
+}

@@ -1,0 +1,20 @@
+{
+  "identifier": "12",
+  "bodyBlocks": [
+    "Funkcja f jest określona następująco:",
+    "f(x)=\\begin{cases} x+2 & \\text{dla } x \\in [-4,2] \\\\ -x+5 & \\text{dla } x \\in (2,5) \\end{cases}",
+    "Wykres funkcji y=f·x przedstawiono w kartezjańskim układzie współrzędnych (x,y) na rysunku poniżej."
+  ],
+  "subtasks": [],
+  "answers": [],
+  "figures": [
+    {
+      "anchor": "end",
+      "bbox": { "x": 12, "y": 38, "width": 76, "height": 42 },
+      "alt": "wykres funkcji f",
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "width": 320,
+      "height": 220
+    }
+  ]
+}

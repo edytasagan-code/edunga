@@ -1,0 +1,95 @@
+{
+  "fixture": "task-12-fill-numbers",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Uzupełnij zdania. Wpisz odpowiednie liczby w wykropkowanych miejscach, aby zdania były prawdziwe."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "1. "
+        },
+        {
+          "type": "text",
+          "text": "Rozwiązaniem równania "
+        },
+        {
+          "type": "math",
+          "latex": "f(x)=3"
+        },
+        {
+          "type": "text",
+          "text": " jest liczba "
+        },
+        {
+          "type": "math",
+          "latex": "\\placeholder{}"
+        },
+        {
+          "type": "text",
+          "text": " ."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "2. "
+        },
+        {
+          "type": "text",
+          "text": "Największa wartość funkcji f w przedziale "
+        },
+        {
+          "type": "math",
+          "latex": "\\left[2,\\,3\\right]"
+        },
+        {
+          "type": "text",
+          "text": " jest równa "
+        },
+        {
+          "type": "math",
+          "latex": "\\placeholder{}"
+        },
+        {
+          "type": "text",
+          "text": " ."
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": ""
+        },
+        {
+          "type": "math",
+          "latex": "1"
+        },
+        {
+          "type": "text",
+          "text": "    "
+        },
+        {
+          "type": "math",
+          "latex": "4"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

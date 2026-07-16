@@ -1,12 +1,9 @@
 @import "tailwindcss";
+@import "./styles/edunga-theme.css";
 
 :root {
-  --background: #1e2128;
-  --foreground: #ffffff;
-
   --yellow: #f7b500;
   --blue: #2563eb;
-  --gray: #2b3038;
 }
 
 * {
@@ -17,7 +14,11 @@
 
 html,
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--edunga-bg);
+  background-image:
+    linear-gradient(var(--edunga-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--edunga-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--edunga-ink);
   font-family: Arial, Helvetica, sans-serif;
 }

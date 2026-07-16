@@ -1,0 +1,70 @@
+{
+  "fixture": "task-image-reading-order",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Na rysunku przedstawiono wykres funkcji f."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Odczytaj wartość f(2)."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "image",
+          "alt": "wykres funkcji f",
+          "hasSrc": true,
+          "width": 300,
+          "height": 200
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Zapisz obliczenia."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "text",
+          "text": "Podaj argument, dla którego f(x) = 0."
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "1"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

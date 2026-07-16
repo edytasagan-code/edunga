@@ -1,0 +1,17 @@
+{
+  "identifier": "10",
+  "instruction": "Uzupełnij tabelę wartościami wyrażenia.",
+  "subtasks": [],
+  "answers": [],
+  "tables": [
+    {
+      "anchor": "after_instruction",
+      "headers": ["x", "f(x)"],
+      "rows": [
+        ["-2", "0"],
+        ["0", "4"],
+        ["2", "8"]
+      ]
+    }
+  ]
+}

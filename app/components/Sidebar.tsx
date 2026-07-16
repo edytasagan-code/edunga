@@ -2,15 +2,15 @@ import Link from "next/link";
 
 export default function Sidebar() {
   return (
-    <aside className="w-80 border-r border-zinc-800 bg-[#1B1E24]">
+    <aside className="edunga-sidebar">
 
       <div className="p-8">
 
-        <h2 className="text-4xl font-bold text-white">
+        <h2 className="text-4xl font-bold edunga-text-body">
           Panel ucznia
         </h2>
 
-        <p className="mt-2 text-m text-zinc-300">
+        <p className="mt-2 text-m edunga-text-muted">
           Klasa 1 LO
         </p>
 
@@ -20,35 +20,35 @@ export default function Sidebar() {
 
         <Link
           href="#"
-          className="block rounded-xl px-5 py-4 text-lg font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-white"
+          className="edunga-sidebar__link edunga-sidebar__link--active"
         >
           Materiały
         </Link>
 
         <Link
           href="#"
-          className="mt-2 block rounded-xl px-5 py-4 text-zinc-400 hover:bg-zinc-800"
+          className="edunga-sidebar__link mt-2"
         >
           Zadania
         </Link>
 
         <Link
           href="#"
-          className="mt-2 block rounded-xl px-5 py-4 text-zinc-400 hover:bg-zinc-800"
+          className="edunga-sidebar__link mt-2"
         >
           Karty pracy
         </Link>
 
         <Link
           href="#"
-          className="mt-2 block rounded-xl px-5 py-4 text-zinc-400 hover:bg-zinc-800"
+          className="edunga-sidebar__link mt-2"
         >
           AI
         </Link>
 
         <Link
           href="#"
-          className="mt-2 block rounded-xl px-5 py-4 text-zinc-400 hover:bg-zinc-800"
+          className="edunga-sidebar__link mt-2"
         >
           Postępy
         </Link>

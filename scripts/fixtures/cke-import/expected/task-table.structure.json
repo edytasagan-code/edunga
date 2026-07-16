@@ -1,0 +1,48 @@
+{
+  "fixture": "task-table",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Uzupełnij tabelę wartościami wyrażenia."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "table",
+          "headers": [
+            "x",
+            "f(x)"
+          ],
+          "rows": [
+            [
+              "-2",
+              "0"
+            ],
+            [
+              "0",
+              "4"
+            ],
+            [
+              "2",
+              "8"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

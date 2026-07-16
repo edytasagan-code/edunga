@@ -1,12 +1,20 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/database/prisma";
+import { prismaErrorResponse } from "@/app/lib/api/prismaError";
+import { prisma } from "@/app/lib/prisma";
 
 export async function GET() {
-  const klasy = await prisma.klasa.findMany({
-    orderBy: {
-      nazwa: "asc",
-    },
-  });
+  try {
+    const klasy = await prisma.klasa.findMany({
+      orderBy: [{ kolejnosc: "asc" }, { nazwa: "asc" }],
+      select: {
+        id: true,
+        nazwa: true,
+        kolejnosc: true,
+      },
+    });
 
-  return NextResponse.json(klasy);
+    return NextResponse.json(klasy);
+  } catch (error) {
+    return prismaErrorResponse(error, "Błąd pobierania klas.");
+  }
 }

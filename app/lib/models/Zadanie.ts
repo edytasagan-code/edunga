@@ -2,6 +2,7 @@ export type Poziom = 1 | 2 | 3 | 4 | 5;
 
 export type TypZadania =
   | "otwarte"
+  | "wybor-wielokrotny"
   | "zamkniete"
   | "prawda-falsz"
   | "uzupelnij"

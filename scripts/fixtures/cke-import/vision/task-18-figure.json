@@ -1,0 +1,30 @@
+{
+  "identifier": "18",
+  "exerciseKind": "multiple_choice",
+  "bodyBlocks": [
+    "Zadanie 18. (0–1)",
+    "Dany jest trójkąt prostokątny ABC, w którym bok AC jest przeciwprostokątną oraz |BC| = 2 i |AC| = 2√10. Oznaczmy kąt BCA przez γ (zobacz rysunek).",
+    "Dokończ zdanie. Wybierz właściwą odpowiedź spośród podanych.",
+    "Sinus kąta γ jest równy"
+  ],
+  "choices": [
+    { "label": "A", "text": "1/√10" },
+    { "label": "B", "text": "1/3" },
+    { "label": "C", "text": "3/√10" },
+    { "label": "D", "text": "√10/11" }
+  ],
+  "choicesLayout": "inline",
+  "subtasks": [],
+  "answers": [{ "label": "", "value": "C" }],
+  "correctChoice": "C",
+  "figures": [
+    {
+      "anchor": "after_instruction",
+      "bbox": { "x": 15, "y": 20, "width": 70, "height": 30 },
+      "alt": "Trójkąt prostokątny z oznaczeniami boków i kąta gamma.",
+      "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "width": 300,
+      "height": 200
+    }
+  ]
+}

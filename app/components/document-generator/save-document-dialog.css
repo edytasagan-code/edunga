@@ -1,0 +1,117 @@
+.save-document-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(27 43 68 / 0.35);
+}
+
+.save-document-dialog {
+  width: min(100%, 32rem);
+  border: 2px solid var(--edunga-border-strong);
+  border-radius: 1rem;
+  background: var(--edunga-paper);
+  box-shadow: 0 24px 48px rgb(27 43 68 / 0.15);
+}
+
+.save-document-dialog__header {
+  padding: 1.25rem 1.5rem 0;
+}
+
+.save-document-dialog__header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--edunga-ink);
+}
+
+.save-document-dialog__header p {
+  margin-top: 0.375rem;
+  font-size: 0.875rem;
+  color: var(--edunga-muted);
+}
+
+.save-document-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.save-document-dialog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--edunga-muted);
+}
+
+.save-document-dialog__required {
+  color: var(--edunga-yellow);
+}
+
+.save-document-dialog__field input,
+.save-document-dialog__field select,
+.save-document-dialog__field textarea {
+  border: 1px solid var(--edunga-border);
+  border-radius: 0.625rem;
+  background: var(--edunga-paper);
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--edunga-ink);
+}
+
+.save-document-dialog__field textarea {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.save-document-dialog__error {
+  border-radius: 0.625rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #b91c1c;
+}
+
+.save-document-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  padding-top: 0.25rem;
+}
+
+.save-document-dialog__button {
+  border-radius: 0.625rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.save-document-dialog__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.save-document-dialog__button--secondary {
+  background: var(--edunga-surface);
+  border: 1px solid var(--edunga-border);
+  color: var(--edunga-ink);
+}
+
+.save-document-dialog__button--secondary:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.save-document-dialog__button--primary {
+  background: var(--edunga-yellow);
+  color: #000;
+}
+
+.save-document-dialog__button--primary:hover:not(:disabled) {
+  background: var(--edunga-yellow-hover);
+}

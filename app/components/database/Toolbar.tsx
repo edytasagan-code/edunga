@@ -16,16 +16,19 @@ export default function Toolbar() {
 
       <div className="flex gap-3">
 
-        <button className="rounded-xl border border-zinc-700 px-5 py-3 text-white hover:border-[#F7B500]">
+        <Link
+          href="/nauczyciel/import"
+          className="rounded-xl border border-zinc-700 px-5 py-3 text-white hover:border-[#F7B500]"
+        >
           Import
-        </button>
+        </Link>
 
         <button className="rounded-xl border border-zinc-700 px-5 py-3 text-white hover:border-[#F7B500]">
           Eksport
         </button>
 
         <Link
-          href="/nauczyciel/baza-zadan/nowe"
+          href="/nauczyciel/edytor"
           className="rounded-xl bg-[#F7B500] px-6 py-3 font-semibold text-black"
         >
           + Dodaj zadanie

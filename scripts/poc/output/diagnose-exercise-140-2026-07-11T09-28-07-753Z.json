@@ -1,0 +1,467 @@
+{
+  "diagnosedAt": "2026-07-11T09:28:07.728Z",
+  "pdfPath": "c:\\Users\\edyta\\Dropbox\\Mój komputer (LAPTOP-CIN5IPK8)\\Downloads\\klasa 1 pdf.pdf",
+  "exercise140VisionJson": {
+    "identifier": "1.40",
+    "sectionReference": "1.38",
+    "level": "basic",
+    "instruction": "Wykonaj działania, stosując prawo przemienności i łączności dodawania:",
+    "subtasks": [
+      {
+        "label": "a",
+        "expression": "(-3,4) + 6 3/4 + 1 1/3 + (-0,6) + (1/3) + (-0,75)",
+        "mathElements": [
+          "-3,4",
+          "6 3/4",
+          "1 1/3",
+          "-0,6",
+          "1/3",
+          "-0,75"
+        ]
+      },
+      {
+        "label": "b",
+        "expression": "2,75 + (-1 3/7) + 4,2 + (-4/7) + 1/4 + (-1,2)",
+        "mathElements": [
+          "2,75",
+          "-1 3/7",
+          "4,2",
+          "-4/7",
+          "1/4",
+          "-1,2"
+        ]
+      },
+      {
+        "label": "c",
+        "expression": "(-√2) + 6,021 + 4 4/6 + 0,979 + (1/6) + √2",
+        "mathElements": [
+          "-√2",
+          "6,021",
+          "4 4/6",
+          "0,979",
+          "1/6",
+          "√2"
+        ]
+      },
+      {
+        "label": "d",
+        "expression": "-3 1/3 + 5,27 + 1 1/3 + 1,24 - 0,04 + 2,73",
+        "mathElements": [
+          "-3 1/3",
+          "5,27",
+          "1 1/3",
+          "1,24",
+          "-0,04",
+          "2,73"
+        ]
+      }
+    ],
+    "answers": [
+      {
+        "label": "a",
+        "value": "3"
+      },
+      {
+        "label": "b",
+        "value": "4"
+      },
+      {
+        "label": "c",
+        "value": "11"
+      },
+      {
+        "label": "d",
+        "value": "7,2"
+      }
+    ]
+  },
+  "instruction": "Wykonaj działania, stosując prawo przemienności i łączności dodawania:",
+  "answers": [
+    {
+      "label": "a",
+      "value": "3"
+    },
+    {
+      "label": "b",
+      "value": "4"
+    },
+    {
+      "label": "c",
+      "value": "11"
+    },
+    {
+      "label": "d",
+      "value": "7,2"
+    }
+  ],
+  "subtasks": [
+    {
+      "visionJson": {
+        "label": "a",
+        "expression": "(-3,4) + 6 3/4 + 1 1/3 + (-0,6) + (1/3) + (-0,75)",
+        "mathElements": [
+          "-3,4",
+          "6 3/4",
+          "1 1/3",
+          "-0,6",
+          "1/3",
+          "-0,75"
+        ]
+      },
+      "visionNotationToLatex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)",
+      "editorDocumentParagraph": {
+        "id": "p-diag-140-1",
+        "children": [
+          {
+            "id": "t-diag-140-1",
+            "type": "text",
+            "text": "a) "
+          },
+          {
+            "id": "m-diag-140-2",
+            "type": "math",
+            "latex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)"
+          },
+          {
+            "id": "bbced1de-b7f4-4afd-9ec7-b934f8f31a88",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      "mathNode": {
+        "id": "m-diag-140-2",
+        "type": "math",
+        "latex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)"
+      },
+      "mathliveInputLatex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)",
+      "previewRender": {
+        "engine": "KaTeX (Import Preview / DocumentViewer — same latex as MathLive input)",
+        "sanitizedLatex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)",
+        "katex": {
+          "ok": true,
+          "html": "<span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"minner\"><span class=\"mopen delimcenter\" style=\"top:0em;\">(</span><span class=\"mord\">−</span><span class=\"mord\">3</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">4</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mord\">63/4</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mord\">11/3</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord\">0</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">6</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">1/3</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord\">0</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">75</span><span class=\"mclose delimcenter\" style=\"top:0em;\">)</span></span></span></span></span>"
+        }
+      }
+    },
+    {
+      "visionJson": {
+        "label": "b",
+        "expression": "2,75 + (-1 3/7) + 4,2 + (-4/7) + 1/4 + (-1,2)",
+        "mathElements": [
+          "2,75",
+          "-1 3/7",
+          "4,2",
+          "-4/7",
+          "1/4",
+          "-1,2"
+        ]
+      },
+      "visionNotationToLatex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)",
+      "editorDocumentParagraph": {
+        "id": "p-diag-140-2",
+        "children": [
+          {
+            "id": "t-diag-140-3",
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "id": "m-diag-140-4",
+            "type": "math",
+            "latex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)"
+          },
+          {
+            "id": "f62e35d4-a0b0-42f4-8888-c1eb344b81ef",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      "mathNode": {
+        "id": "m-diag-140-4",
+        "type": "math",
+        "latex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)"
+      },
+      "mathliveInputLatex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)",
+      "previewRender": {
+        "engine": "KaTeX (Import Preview / DocumentViewer — same latex as MathLive input)",
+        "sanitizedLatex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)",
+        "katex": {
+          "ok": true,
+          "html": "<span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">2</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">75</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord\">13/7</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">4</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">2</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord\">4/7</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mord\">1/4</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord\">1</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">2</span><span class=\"mclose\">)</span></span></span></span>"
+        }
+      }
+    },
+    {
+      "visionJson": {
+        "label": "c",
+        "expression": "(-√2) + 6,021 + 4 4/6 + 0,979 + (1/6) + √2",
+        "mathElements": [
+          "-√2",
+          "6,021",
+          "4 4/6",
+          "0,979",
+          "1/6",
+          "√2"
+        ]
+      },
+      "visionNotationToLatex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}",
+      "editorDocumentParagraph": {
+        "id": "p-diag-140-3",
+        "children": [
+          {
+            "id": "t-diag-140-5",
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "id": "m-diag-140-6",
+            "type": "math",
+            "latex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}"
+          },
+          {
+            "id": "e9407441-b400-4e02-8814-735b245328ef",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      "mathNode": {
+        "id": "m-diag-140-6",
+        "type": "math",
+        "latex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}"
+      },
+      "mathliveInputLatex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}",
+      "previewRender": {
+        "engine": "KaTeX (Import Preview / DocumentViewer — same latex as MathLive input)",
+        "sanitizedLatex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}",
+        "katex": {
+          "ok": true,
+          "html": "<span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1.1572em;vertical-align:-0.25em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">−</span><span class=\"mord sqrt\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.9072em;\"><span class=\"svg-align\" style=\"top:-3em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"mord\" style=\"padding-left:0.833em;\"><span class=\"mord\">2</span></span></span><span style=\"top:-2.8672em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"hide-tail\" style=\"min-width:0.853em;height:1.08em;\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400em\" height=\"1.08em\" viewBox=\"0 0 400000 1080\" preserveAspectRatio=\"xMinYMin slice\"><path d=\"M95,702\nc-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14\nc0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54\nc44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10\ns173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429\nc69,-144,104.5,-217.7,106.5,-221\nl0 -0\nc5.3,-9.3,12,-14,20,-14\nH400000v40H845.2724\ns-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7\nc-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z\nM834 80h400000v40h-400000z\"/></svg></span></span></span><span class=\"vlist-s\">​</span></span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1328em;\"><span></span></span></span></span></span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">6</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">021</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mord\">44/6</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">0</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">979</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mopen\">(</span><span class=\"mord\">1/6</span><span class=\"mclose\">)</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1.04em;vertical-align:-0.1328em;\"></span><span class=\"mord sqrt\"><span class=\"vlist-t vlist-t2\"><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.9072em;\"><span class=\"svg-align\" style=\"top:-3em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"mord\" style=\"padding-left:0.833em;\"><span class=\"mord\">2</span></span></span><span style=\"top:-2.8672em;\"><span class=\"pstrut\" style=\"height:3em;\"></span><span class=\"hide-tail\" style=\"min-width:0.853em;height:1.08em;\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400em\" height=\"1.08em\" viewBox=\"0 0 400000 1080\" preserveAspectRatio=\"xMinYMin slice\"><path d=\"M95,702\nc-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14\nc0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54\nc44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10\ns173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429\nc69,-144,104.5,-217.7,106.5,-221\nl0 -0\nc5.3,-9.3,12,-14,20,-14\nH400000v40H845.2724\ns-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7\nc-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z\nM834 80h400000v40h-400000z\"/></svg></span></span></span><span class=\"vlist-s\">​</span></span><span class=\"vlist-r\"><span class=\"vlist\" style=\"height:0.1328em;\"><span></span></span></span></span></span></span></span></span>"
+        }
+      }
+    },
+    {
+      "visionJson": {
+        "label": "d",
+        "expression": "-3 1/3 + 5,27 + 1 1/3 + 1,24 - 0,04 + 2,73",
+        "mathElements": [
+          "-3 1/3",
+          "5,27",
+          "1 1/3",
+          "1,24",
+          "-0,04",
+          "2,73"
+        ]
+      },
+      "visionNotationToLatex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73",
+      "editorDocumentParagraph": {
+        "id": "p-diag-140-4",
+        "children": [
+          {
+            "id": "t-diag-140-7",
+            "type": "text",
+            "text": "d) "
+          },
+          {
+            "id": "m-diag-140-8",
+            "type": "math",
+            "latex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73"
+          },
+          {
+            "id": "bde075dd-673a-4961-b3b3-dd643687ec4d",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      "mathNode": {
+        "id": "m-diag-140-8",
+        "type": "math",
+        "latex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73"
+      },
+      "mathliveInputLatex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73",
+      "previewRender": {
+        "engine": "KaTeX (Import Preview / DocumentViewer — same latex as MathLive input)",
+        "sanitizedLatex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73",
+        "katex": {
+          "ok": true,
+          "html": "<span class=\"katex\"><span class=\"katex-html\" aria-hidden=\"true\"><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mord\">−</span><span class=\"mord\">31/3</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">5</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">27</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:1em;vertical-align:-0.25em;\"></span><span class=\"mord\">11/3</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">1</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">24</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">−</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">0</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">04</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span><span class=\"mbin\">+</span><span class=\"mspace\" style=\"margin-right:0.2222em;\"></span></span><span class=\"base\"><span class=\"strut\" style=\"height:0.8389em;vertical-align:-0.1944em;\"></span><span class=\"mord\">2</span><span class=\"mord\"><span class=\"mpunct\">,</span></span><span class=\"mord\">73</span></span></span></span>"
+        }
+      }
+    }
+  ],
+  "fullEditorDocument": {
+    "version": 1,
+    "paragraphs": [
+      {
+        "id": "p-diag-140-0",
+        "children": [
+          {
+            "id": "t-diag-140-0",
+            "type": "text",
+            "text": "Wykonaj działania, stosując prawo przemienności i łączności dodawania:"
+          }
+        ]
+      },
+      {
+        "id": "p-diag-140-1",
+        "children": [
+          {
+            "id": "t-diag-140-1",
+            "type": "text",
+            "text": "a) "
+          },
+          {
+            "id": "m-diag-140-2",
+            "type": "math",
+            "latex": "\\left(-3{,}4) + 6 3/4 + 1 1/3 + (-0{,}6) + (1/3) + (-0{,}75\\right)"
+          },
+          {
+            "id": "bbced1de-b7f4-4afd-9ec7-b934f8f31a88",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "p-diag-140-2",
+        "children": [
+          {
+            "id": "t-diag-140-3",
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "id": "m-diag-140-4",
+            "type": "math",
+            "latex": "2{,}75 + (-1 3/7) + 4{,}2 + (-4/7) + 1/4 + (-1{,}2)"
+          },
+          {
+            "id": "f62e35d4-a0b0-42f4-8888-c1eb344b81ef",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "p-diag-140-3",
+        "children": [
+          {
+            "id": "t-diag-140-5",
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "id": "m-diag-140-6",
+            "type": "math",
+            "latex": "(-\\sqrt{2}) + 6{,}021 + 4 4/6 + 0{,}979 + (1/6) + \\sqrt{2}"
+          },
+          {
+            "id": "e9407441-b400-4e02-8814-735b245328ef",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "p-diag-140-4",
+        "children": [
+          {
+            "id": "t-diag-140-7",
+            "type": "text",
+            "text": "d) "
+          },
+          {
+            "id": "m-diag-140-8",
+            "type": "math",
+            "latex": "-3 1/3 + 5{,}27 + 1 1/3 + 1{,}24 - 0{,}04 + 2{,}73"
+          },
+          {
+            "id": "bde075dd-673a-4961-b3b3-dd643687ec4d",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "id": "p-diag-140-5",
+        "children": [
+          {
+            "id": "t-diag-140-9",
+            "type": "text",
+            "text": "Odp. "
+          },
+          {
+            "id": "t-diag-140-10",
+            "type": "text",
+            "text": "a) "
+          },
+          {
+            "id": "m-diag-140-11",
+            "type": "math",
+            "latex": "3"
+          },
+          {
+            "id": "t-diag-140-12",
+            "type": "text",
+            "text": " "
+          },
+          {
+            "id": "t-diag-140-13",
+            "type": "text",
+            "text": "b) "
+          },
+          {
+            "id": "m-diag-140-14",
+            "type": "math",
+            "latex": "4"
+          },
+          {
+            "id": "t-diag-140-15",
+            "type": "text",
+            "text": " "
+          },
+          {
+            "id": "t-diag-140-16",
+            "type": "text",
+            "text": "c) "
+          },
+          {
+            "id": "m-diag-140-17",
+            "type": "math",
+            "latex": "11"
+          },
+          {
+            "id": "t-diag-140-18",
+            "type": "text",
+            "text": " "
+          },
+          {
+            "id": "t-diag-140-19",
+            "type": "text",
+            "text": "d) "
+          },
+          {
+            "id": "m-diag-140-20",
+            "type": "math",
+            "latex": "7{,}2"
+          },
+          {
+            "id": "669a5105-b1f5-42d9-9416-3064d2b9a3a6",
+            "type": "text",
+            "text": ""
+          }
+        ]
+      }
+    ]
+  },
+  "pipelineNotes": [
+    "Stage 1: exercise140VisionJson.subtasks[].expression = raw Vision JSON per subtask",
+    "Stage 2: subtasks[].visionNotationToLatex = visionNotationToLatex() output",
+    "Stage 3: subtasks[].editorDocumentParagraph + fullEditorDocument = EditorDocument generation",
+    "Stage 4: subtasks[].mathliveInputLatex = latex stored in MathNode (MathLive editor input)",
+    "Stage 4 preview: subtasks[].previewRender = KaTeX render of same latex (Import Preview UI)"
+  ]
+}
