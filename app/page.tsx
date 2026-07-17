@@ -16,6 +16,25 @@ export default function HomePage() {
         backgroundColor: "#d3cec5",
       }}
     >
+      <p
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 99999,
+          margin: 0,
+          padding: "10px 16px",
+          background: "#dc2626",
+          color: "#fff",
+          fontWeight: 800,
+          fontSize: "18px",
+          letterSpacing: "0.04em",
+          textAlign: "center",
+        }}
+      >
+        MURAL HOME OK — jeśli tego nie widzisz, patrzysz na inny serwer
+      </p>
       <aside
         className="home-page__nav"
         aria-label="Nawigacja"
@@ -24,6 +43,7 @@ export default function HomePage() {
           maxWidth: "50%",
           zIndex: 1,
           background: "transparent",
+          paddingTop: "48px",
         }}
       >
         <Dashboard />
