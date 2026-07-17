@@ -14,28 +14,31 @@
 
 .home-mural__image {
   display: block;
-  width: 96%;
-  max-height: 96%;
+  width: 98%;
+  max-height: 98%;
   object-fit: contain;
   object-position: center 40%;
-  transform: translateX(-125px);
+  transform: translateX(-135px);
 }
 
 /* Soft left-edge wash: warm concrete → transparent → mural */
 .home-mural__fade {
   position: absolute;
   inset: 0 auto 0 0;
-  width: min(75%, 380px);
+  width: min(85%, 420px);
   background: linear-gradient(
     to right,
     #d3cec5 0,
-    #d3cec5 70px,
-    rgb(211 206 197 / 0.97) 120px,
-    rgb(211 206 197 / 0.82) 175px,
-    rgb(211 206 197 / 0.58) 230px,
-    rgb(211 206 197 / 0.32) 275px,
-    rgb(211 206 197 / 0.1) 315px,
-    transparent 350px
+    #d3cec5 95px,
+    rgb(211 206 197 / 0.96) 145px,
+    rgb(211 206 197 / 0.88) 190px,
+    rgb(211 206 197 / 0.76) 235px,
+    rgb(211 206 197 / 0.6) 280px,
+    rgb(211 206 197 / 0.42) 320px,
+    rgb(211 206 197 / 0.24) 355px,
+    rgb(211 206 197 / 0.1) 385px,
+    rgb(211 206 197 / 0.03) 410px,
+    transparent 420px
   );
   pointer-events: none;
 }
@@ -46,25 +49,28 @@
   }
 
   .home-mural__image {
-    width: 94%;
-    max-height: 94%;
+    width: 96%;
+    max-height: 96%;
     object-fit: contain;
     object-position: center 40%;
-    transform: translateX(-70px);
+    transform: translateX(-90px);
   }
 
   .home-mural__fade {
     left: 0;
-    width: min(88%, 300px);
+    width: min(92%, 340px);
     background: linear-gradient(
       to right,
       #d3cec5 0,
-      #d3cec5 45px,
-      rgb(211 206 197 / 0.94) 85px,
-      rgb(211 206 197 / 0.68) 145px,
-      rgb(211 206 197 / 0.38) 205px,
-      rgb(211 206 197 / 0.12) 255px,
-      transparent 300px
+      #d3cec5 55px,
+      rgb(211 206 197 / 0.95) 95px,
+      rgb(211 206 197 / 0.84) 140px,
+      rgb(211 206 197 / 0.68) 185px,
+      rgb(211 206 197 / 0.48) 230px,
+      rgb(211 206 197 / 0.28) 275px,
+      rgb(211 206 197 / 0.12) 310px,
+      rgb(211 206 197 / 0.04) 330px,
+      transparent 340px
     );
   }
 }

@@ -1,5 +1,5 @@
-import Dashboard from "@/app/components/dashboard/Dashboard";
+import { redirect } from "next/navigation";
 
 export default function TeacherHomePage() {
-  return <Dashboard />;
+  redirect("/");
 }

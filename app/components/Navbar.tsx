@@ -67,7 +67,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/nauczyciel"
+            href="/"
             className="transition hover:text-[#F7B500]"
           >
             Nauczyciel
