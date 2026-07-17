@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type ReactNode,
   type RefObject,
   useEffect,
   useState,
@@ -14,6 +15,7 @@ import {
 } from "./commands";
 import type { ImageAlign } from "./types";
 import { INK_PALETTE } from "./core/inkStrokeUtils";
+import "./styles.css";
 
 type EditorMode = "select" | "pen" | "eraser";
 
@@ -34,6 +36,7 @@ type Props = {
   onAlignInk?: (align: ImageAlign) => void;
   hasSelectedInk?: boolean;
   selectedInkAlign?: ImageAlign;
+  onConvertInkToMath?: () => void;
   onDuplicateBlocks?: () => void;
   onMoveBlocksUp?: () => void;
   onMoveBlocksDown?: () => void;
@@ -43,10 +46,14 @@ type Props = {
 };
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   onAction?: () => void | Promise<void>;
   active?: boolean;
   title?: string;
+  /** Green outline (handwriting / eraser / insert ink). */
+  tool?: boolean;
+  /** 2× width + darker green (convert ink → math). */
+  toolWideDark?: boolean;
 };
 
 function ToolbarButton({
@@ -54,6 +61,8 @@ function ToolbarButton({
   onAction,
   active = false,
   title,
+  tool = false,
+  toolWideDark = false,
 }: ButtonProps) {
   return (
     <button
@@ -63,27 +72,17 @@ function ToolbarButton({
         event.preventDefault();
         void onAction?.();
       }}
-      className={`
-        rounded px-2 py-1 text-sm text-white
-        ${
-          active
-            ? "bg-yellow-500 text-black"
-            : "bg-zinc-700 hover:bg-zinc-600"
-        }
-      `}
+      className={`edunga-toolbar-btn${tool ? " edunga-toolbar-btn--tool" : ""}${
+        toolWideDark ? " edunga-toolbar-btn--tool-wide-dark" : ""
+      }${active ? " edunga-toolbar-btn--active" : ""}`}
     >
-      {children}
+      <span className="edunga-toolbar-btn__label">{children}</span>
     </button>
   );
 }
 
-function ToolbarDivider() {
-  return (
-    <div
-      className="mx-1 h-6 w-px bg-zinc-600"
-      aria-hidden
-    />
-  );
+function ToolbarRow({ children }: { children: ReactNode }) {
+  return <div className="edunga-editor-toolbar__row">{children}</div>;
 }
 
 export default function Toolbar({
@@ -103,6 +102,7 @@ export default function Toolbar({
   onAlignInk,
   hasSelectedInk = false,
   selectedInkAlign = "left",
+  onConvertInkToMath,
   onDuplicateBlocks,
   onMoveBlocksUp,
   onMoveBlocksDown,
@@ -145,445 +145,421 @@ export default function Toolbar({
     action(editorRoot.current);
   }
 
+  const items: ReactNode[] = [
+    <ToolbarButton
+      key="fx"
+      title="Wstaw formułę matematyczną"
+      onAction={async () => {
+        await onInsertMath();
+      }}
+    >
+      fx
+    </ToolbarButton>,
+    <ToolbarButton
+      key="keyboard"
+      title="Klawiatura matematyczna"
+      active={keyboardVisible}
+      onAction={async () => {
+        await ensureMathFocus();
+        toggleVirtualKeyboard();
+      }}
+    >
+      ⌨
+    </ToolbarButton>,
+    <ToolbarButton
+      key="image"
+      title="Wstaw obraz"
+      onAction={onInsertImage}
+    >
+      🖼
+    </ToolbarButton>,
+  ];
+
+  if (hasSelectedImage) {
+    items.push(
+      <ToolbarButton
+        key="img-left"
+        title="Wyrównaj do lewej"
+        active={selectedImageAlign === "left"}
+        onAction={() => onAlignImage?.("left")}
+      >
+        ⬅
+      </ToolbarButton>,
+      <ToolbarButton
+        key="img-center"
+        title="Wyśrodkuj"
+        active={selectedImageAlign === "center"}
+        onAction={() => onAlignImage?.("center")}
+      >
+        ↔
+      </ToolbarButton>,
+      <ToolbarButton
+        key="img-right"
+        title="Wyrównaj do prawej"
+        active={selectedImageAlign === "right"}
+        onAction={() => onAlignImage?.("right")}
+      >
+        ➡
+      </ToolbarButton>,
+      <ToolbarButton
+        key="img-replace"
+        title="Zamień obraz"
+        onAction={() => onReplaceImage?.()}
+      >
+        ↻
+      </ToolbarButton>
+    );
+  }
+
+  items.push(
+    <ToolbarButton
+      key="select"
+      title="Tryb zaznaczania"
+      active={editorMode === "select"}
+      onAction={() => onEditorModeChange?.("select")}
+    >
+      ↖
+    </ToolbarButton>,
+    <ToolbarButton
+      key="pen"
+      title="Tryb pisania odręcznego"
+      active={editorMode === "pen"}
+      tool
+      onAction={() => onEditorModeChange?.("pen")}
+    >
+      ✎
+    </ToolbarButton>,
+    <ToolbarButton
+      key="eraser"
+      title="Gumka — usuń całą kreskę"
+      active={editorMode === "eraser"}
+      tool
+      onAction={() => onEditorModeChange?.("eraser")}
+    >
+      🧹
+    </ToolbarButton>,
+    <ToolbarButton
+      key="ink-insert"
+      title="Wstaw pole odręczne"
+      tool
+      onAction={() => {
+        onEditorModeChange?.("pen");
+        onInsertInk?.();
+      }}
+    >
+      ✎+
+    </ToolbarButton>
+  );
+
+  if (editorMode === "pen" || hasSelectedInk) {
+    for (const { label, color } of INK_PALETTE) {
+      items.push(
+        <button
+          key={`ink-color-${color}`}
+          type="button"
+          title={label}
+          aria-label={label}
+          aria-pressed={inkColor === color}
+          className={`edunga-toolbar-btn edunga-toolbar-btn--swatch${
+            inkColor === color ? " edunga-toolbar-btn--active" : ""
+          }`}
+          style={{ backgroundColor: color }}
+          onMouseDown={(event) => {
+            event.preventDefault();
+            onInkColorChange?.(color);
+          }}
+        />
+      );
+    }
+  }
+
+  if (hasSelectedInk) {
+    items.push(
+      <ToolbarButton
+        key="ink-left"
+        title="Wyrównaj do lewej"
+        active={selectedInkAlign === "left"}
+        onAction={() => onAlignInk?.("left")}
+      >
+        ⬅
+      </ToolbarButton>,
+      <ToolbarButton
+        key="ink-center"
+        title="Wyśrodkuj"
+        active={selectedInkAlign === "center"}
+        onAction={() => onAlignInk?.("center")}
+      >
+        ↔
+      </ToolbarButton>,
+      <ToolbarButton
+        key="ink-right"
+        title="Wyrównaj do prawej"
+        active={selectedInkAlign === "right"}
+        onAction={() => onAlignInk?.("right")}
+      >
+        ➡
+      </ToolbarButton>
+    );
+  }
+
+  items.push(
+    <ToolbarButton
+      key="ink-to-math"
+      title="Napisz pismo odręczne i wstaw jako matematykę"
+      toolWideDark
+      onAction={() => onConvertInkToMath?.()}
+    >
+      ✎→fx
+    </ToolbarButton>,
+    <ToolbarButton
+      key="dup"
+      title="Duplikuj blok (Ctrl+D)"
+      onAction={() => onDuplicateBlocks?.()}
+    >
+      ⧉
+    </ToolbarButton>,
+    <ToolbarButton
+      key="up"
+      title="Przesuń blok wyżej (Alt+↑)"
+      onAction={() => onMoveBlocksUp?.()}
+    >
+      ↑
+    </ToolbarButton>,
+    <ToolbarButton
+      key="down"
+      title="Przesuń blok niżej (Alt+↓)"
+      onAction={() => onMoveBlocksDown?.()}
+    >
+      ↓
+    </ToolbarButton>,
+    <ToolbarButton
+      key="outline"
+      title="Spis bloków"
+      active={outlineVisible}
+      onAction={() => onToggleOutline?.()}
+    >
+      ≡
+    </ToolbarButton>,
+    <ToolbarButton
+      key="frac"
+      title="Ułamek"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("frac", root))
+      }
+    >
+      □/□
+    </ToolbarButton>,
+    <ToolbarButton
+      key="sqrt"
+      title="Pierwiastek"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("sqrt", root))
+      }
+    >
+      √
+    </ToolbarButton>,
+    <ToolbarButton
+      key="x2"
+      title="Potęga 2"
+      onAction={() =>
+        runMathAction((root) =>
+          insertMathTemplate("superscript", root)
+        )
+      }
+    >
+      x²
+    </ToolbarButton>,
+    <ToolbarButton
+      key="xn"
+      title="Wykładnik"
+      onAction={() =>
+        runMathAction((root) =>
+          insertMathTemplate("exponent", root)
+        )
+      }
+    >
+      xⁿ
+    </ToolbarButton>,
+    <ToolbarButton
+      key="sub"
+      title="Indeks dolny"
+      onAction={() =>
+        runMathAction((root) => insertLatex("_{#0}", root))
+      }
+    >
+      xₙ
+    </ToolbarButton>,
+    <ToolbarButton
+      key="log"
+      title="Logarytm"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("log", root))
+      }
+    >
+      log
+    </ToolbarButton>,
+    <ToolbarButton
+      key="ln"
+      title="Logarytm naturalny"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("ln", root))
+      }
+    >
+      ln
+    </ToolbarButton>,
+    <ToolbarButton
+      key="paren"
+      title="Nawias okrągły"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("paren", root))
+      }
+    >
+      ( )
+    </ToolbarButton>,
+    <ToolbarButton
+      key="bracket"
+      title="Nawias kwadratowy"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("bracket", root))
+      }
+    >
+      [ ]
+    </ToolbarButton>,
+    <ToolbarButton
+      key="brace"
+      title="Nawias klamrowy"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("brace", root))
+      }
+    >
+      {"{}"}
+    </ToolbarButton>,
+    <ToolbarButton
+      key="pi"
+      title="Pi"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("pi", root))
+      }
+    >
+      π
+    </ToolbarButton>,
+    <ToolbarButton
+      key="delta"
+      title="Delta"
+      onAction={() =>
+        runMathAction((root) => insertLatex("\\Delta", root))
+      }
+    >
+      Δ
+    </ToolbarButton>,
+    <ToolbarButton
+      key="le"
+      title="Mniejsze lub równe"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("le", root))
+      }
+    >
+      ≤
+    </ToolbarButton>,
+    <ToolbarButton
+      key="ge"
+      title="Większe lub równe"
+      onAction={() =>
+        runMathAction((root) => insertMathTemplate("ge", root))
+      }
+    >
+      ≥
+    </ToolbarButton>,
+    <ToolbarButton
+      key="ne"
+      title="Różne od"
+      onAction={() =>
+        runMathAction((root) => insertLatex("\\ne", root))
+      }
+    >
+      ≠
+    </ToolbarButton>,
+    <ToolbarButton
+      key="in"
+      title="Należy do"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("in", root))
+      }
+    >
+      ∈
+    </ToolbarButton>,
+    <ToolbarButton
+      key="notin"
+      title="Nie należy do"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("notin", root))
+      }
+    >
+      ∉
+    </ToolbarButton>,
+    <ToolbarButton
+      key="subset"
+      title="Podzbiór"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("subset", root))
+      }
+    >
+      ⊂
+    </ToolbarButton>,
+    <ToolbarButton
+      key="cup"
+      title="Suma zbiorów"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("cup", root))
+      }
+    >
+      ∪
+    </ToolbarButton>,
+    <ToolbarButton
+      key="cap"
+      title="Część wspólna"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("cap", root))
+      }
+    >
+      ∩
+    </ToolbarButton>,
+    <ToolbarButton
+      key="pm"
+      title="Plus-minus"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("pm", root))
+      }
+    >
+      ±
+    </ToolbarButton>,
+    <ToolbarButton
+      key="infty"
+      title="Nieskończoność"
+      onAction={() =>
+        runMathAction((root) => insertMathSymbol("infty", root))
+      }
+    >
+      ∞
+    </ToolbarButton>
+  );
+
+  const splitAt = Math.ceil(items.length / 2);
+
   return (
-    <div className="flex flex-wrap items-center gap-2 border-b border-zinc-700 bg-zinc-800 p-2">
-      <ToolbarButton
-        title="Wstaw formułę matematyczną"
-        onAction={async () => {
-          await onInsertMath();
-        }}
-      >
-        fx
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Klawiatura matematyczna"
-        active={keyboardVisible}
-        onAction={async () => {
-          await ensureMathFocus();
-          toggleVirtualKeyboard();
-        }}
-      >
-        ⌨
-      </ToolbarButton>
-
-      <ToolbarDivider />
-
-      <ToolbarButton
-        title="Wstaw obraz"
-        onAction={onInsertImage}
-      >
-        🖼
-      </ToolbarButton>
-
-      {hasSelectedImage ? (
-        <>
-          <ToolbarButton
-            title="Wyrównaj do lewej"
-            active={selectedImageAlign === "left"}
-            onAction={() => onAlignImage?.("left")}
-          >
-            ⬅
-          </ToolbarButton>
-
-          <ToolbarButton
-            title="Wyśrodkuj"
-            active={selectedImageAlign === "center"}
-            onAction={() => onAlignImage?.("center")}
-          >
-            ↔
-          </ToolbarButton>
-
-          <ToolbarButton
-            title="Wyrównaj do prawej"
-            active={selectedImageAlign === "right"}
-            onAction={() => onAlignImage?.("right")}
-          >
-            ➡
-          </ToolbarButton>
-
-          <ToolbarButton
-            title="Zamień obraz"
-            onAction={() => onReplaceImage?.()}
-          >
-            ↻
-          </ToolbarButton>
-        </>
-      ) : null}
-
-      <ToolbarDivider />
-
-      <ToolbarButton
-        title="Tryb zaznaczania"
-        active={editorMode === "select"}
-        onAction={() => onEditorModeChange?.("select")}
-      >
-        ↖
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Tryb pisania odręcznego"
-        active={editorMode === "pen"}
-        onAction={() => onEditorModeChange?.("pen")}
-      >
-        ✎
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Gumka — usuń całą kreskę"
-        active={editorMode === "eraser"}
-        onAction={() => onEditorModeChange?.("eraser")}
-      >
-        🧹
-      </ToolbarButton>
-
-      {editorMode === "pen" || hasSelectedInk ? (
-        <div
-          className="edunga-ink-color-palette"
-          role="group"
-          aria-label="Kolor pisaka"
-        >
-          {INK_PALETTE.map(({ label, color }) => (
-            <button
-              key={color}
-              type="button"
-              title={label}
-              aria-label={label}
-              aria-pressed={inkColor === color}
-              className={`edunga-ink-color-swatch${
-                inkColor === color ? " is-active" : ""
-              }`}
-              style={{ backgroundColor: color }}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                onInkColorChange?.(color);
-              }}
-            />
-          ))}
-        </div>
-      ) : null}
-
-      <ToolbarButton
-        title="Wstaw pole odręczne"
-        onAction={() => {
-          onEditorModeChange?.("pen");
-          onInsertInk?.();
-        }}
-      >
-        ✎+
-      </ToolbarButton>
-
-      {hasSelectedInk ? (
-        <>
-          <ToolbarButton
-            title="Wyrównaj do lewej"
-            active={selectedInkAlign === "left"}
-            onAction={() => onAlignInk?.("left")}
-          >
-            ⬅
-          </ToolbarButton>
-
-          <ToolbarButton
-            title="Wyśrodkuj"
-            active={selectedInkAlign === "center"}
-            onAction={() => onAlignInk?.("center")}
-          >
-            ↔
-          </ToolbarButton>
-
-          <ToolbarButton
-            title="Wyrównaj do prawej"
-            active={selectedInkAlign === "right"}
-            onAction={() => onAlignInk?.("right")}
-          >
-            ➡
-          </ToolbarButton>
-        </>
-      ) : null}
-
-      <ToolbarDivider />
-
-      <ToolbarButton
-        title="Duplikuj blok (Ctrl+D)"
-        onAction={() => onDuplicateBlocks?.()}
-      >
-        ⧉
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Przesuń blok wyżej (Alt+↑)"
-        onAction={() => onMoveBlocksUp?.()}
-      >
-        ↑
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Przesuń blok niżej (Alt+↓)"
-        onAction={() => onMoveBlocksDown?.()}
-      >
-        ↓
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Spis bloków"
-        active={outlineVisible}
-        onAction={() => onToggleOutline?.()}
-      >
-        ≡
-      </ToolbarButton>
-
-      <ToolbarDivider />
-
-      <ToolbarButton
-        title="Ułamek"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("frac", root)
-          )
-        }
-      >
-        □/□
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Pierwiastek"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("sqrt", root)
-          )
-        }
-      >
-        √
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Potęga 2"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("superscript", root)
-          )
-        }
-      >
-        x²
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Wykładnik"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("exponent", root)
-          )
-        }
-      >
-        xⁿ
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Indeks dolny"
-        onAction={() =>
-          runMathAction((root) =>
-            insertLatex("_{#0}", root)
-          )
-        }
-      >
-        xₙ
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Logarytm"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("log", root)
-          )
-        }
-      >
-        log
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Logarytm naturalny"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("ln", root)
-          )
-        }
-      >
-        ln
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Nawias okrągły"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("paren", root)
-          )
-        }
-      >
-        ( )
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Nawias kwadratowy"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("bracket", root)
-          )
-        }
-      >
-        [ ]
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Nawias klamrowy"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("brace", root)
-          )
-        }
-      >
-        {"{}"}
-      </ToolbarButton>
-
-      <ToolbarDivider />
-
-      <ToolbarButton
-        title="Pi"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("pi", root)
-          )
-        }
-      >
-        π
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Delta"
-        onAction={() =>
-          runMathAction((root) =>
-            insertLatex("\\Delta", root)
-          )
-        }
-      >
-        Δ
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Mniejsze lub równe"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("le", root)
-          )
-        }
-      >
-        ≤
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Większe lub równe"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathTemplate("ge", root)
-          )
-        }
-      >
-        ≥
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Różne od"
-        onAction={() =>
-          runMathAction((root) =>
-            insertLatex("\\ne", root)
-          )
-        }
-      >
-        ≠
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Należy do"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("in", root)
-          )
-        }
-      >
-        ∈
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Nie należy do"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("notin", root)
-          )
-        }
-      >
-        ∉
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Podzbiór"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("subset", root)
-          )
-        }
-      >
-        ⊂
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Suma zbiorów"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("cup", root)
-          )
-        }
-      >
-        ∪
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Część wspólna"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("cap", root)
-          )
-        }
-      >
-        ∩
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Plus-minus"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("pm", root)
-          )
-        }
-      >
-        ±
-      </ToolbarButton>
-
-      <ToolbarButton
-        title="Nieskończoność"
-        onAction={() =>
-          runMathAction((root) =>
-            insertMathSymbol("infty", root)
-          )
-        }
-      >
-        ∞
-      </ToolbarButton>
-
-      <span
+    <div
+      className="edunga-editor-toolbar"
+      role="toolbar"
+      aria-label="Narzędzia edytora"
+    >
+      <ToolbarRow>{items.slice(0, splitAt)}</ToolbarRow>
+      <ToolbarRow>{items.slice(splitAt)}</ToolbarRow>
+      <p
         className="edunga-editor-shortcuts-help"
         title="Skróty: Alt+↑/↓ przesuń blok, Ctrl+D duplikuj, Ctrl+G przejdź, Shift+klik zaznacz zakres"
       >
         {hasBlockSelection ? "Zaznaczone bloki" : "Alt+↑/↓ · Ctrl+D · Ctrl+G"}
-      </span>
+      </p>
     </div>
   );
 }

@@ -444,6 +444,10 @@ export default function ImportExerciseEditor({
               selectedInkAlign={
                 activeToolbar.getSelectedInkAlign?.() ?? "left"
               }
+              onConvertInkToMath={() => {
+                activeToolbar.onConvertInkToMath?.();
+                setToolbarRevision((revision) => revision + 1);
+              }}
               onDuplicateBlocks={() => activeToolbar.duplicateBlocks?.()}
               onMoveBlocksUp={() => activeToolbar.moveBlocksUp?.()}
               onMoveBlocksDown={() => activeToolbar.moveBlocksDown?.()}

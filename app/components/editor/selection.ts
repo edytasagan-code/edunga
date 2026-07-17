@@ -238,15 +238,25 @@ export function resolveInsertPositionFromStoredCursor(
     return null;
   }
 
-  const liveText = readLiveTextFromNode(
-    editorRoot,
-    position.paragraphId,
-    position.nodeId
+  const paragraph = document.paragraphs.find(
+    (item) => item.id === position.paragraphId
+  );
+  const textNode = paragraph?.children.find(
+    (item) => item.id === position.nodeId
   );
 
-  if (liveText === null) {
+  if (!textNode || textNode.type !== "text") {
     return null;
   }
+
+  // Dialog / focus loss can leave the text node out of the live DOM;
+  // fall back to the document model so insert still works.
+  const liveText =
+    readLiveTextFromNode(
+      editorRoot,
+      position.paragraphId,
+      position.nodeId
+    ) ?? textNode.text;
 
   return {
     paragraphId: position.paragraphId,

@@ -14,7 +14,11 @@ import {
 } from "react";
 import { flushSync } from "react-dom";
 
+import dynamic from "next/dynamic";
 import Toolbar from "./Toolbar";
+const ConvertInkToMathDialog = dynamic(() => import("./ConvertInkToMathDialog"), {
+  ssr: false,
+});
 import "./styles.css";
 import "./editor-split-layout.css";
 import {
@@ -63,15 +67,15 @@ import insertMath from "./core/operations/insertMath";
 import insertImage from "./core/operations/insertImage";
 import insertInk from "./core/operations/insertInk";
 import updateImage from "./core/operations/updateImage";
-import updateInk from "./core/operations/updateInk";
-import moveImage from "./core/operations/moveImage";
-import moveInk from "./core/operations/moveInk";
 import {
   DEFAULT_INK_HEIGHT,
   DEFAULT_INK_WIDTH,
   DEFAULT_INK_STROKE_COLOR,
   scaleInkStrokes,
 } from "./core/inkStrokeUtils";
+import updateInk from "./core/operations/updateInk";
+import moveImage from "./core/operations/moveImage";
+import moveInk from "./core/operations/moveInk";
 import moveParagraph, {
   moveParagraphsByIndex,
 } from "./core/operations/moveParagraph";
@@ -152,6 +156,7 @@ export type EditorToolbarTarget = {
   onAlignInk?: (align: ImageAlign) => void;
   hasSelectedInk?: () => boolean;
   getSelectedInkAlign?: () => ImageAlign;
+  onConvertInkToMath?: () => void;
   onDeleteEntireContent: () => void;
   ensureMathFocus: () => Promise<void>;
   scrollToParagraph?: (paragraphId: string) => void;
@@ -185,6 +190,7 @@ export type EditorHandle = EditorToolbarTarget & {
   onAlignInk: (align: ImageAlign) => void;
   hasSelectedInk: () => boolean;
   getSelectedInkAlign: () => ImageAlign;
+  onConvertInkToMath: () => void;
 };
 
 type Props = {
@@ -198,6 +204,8 @@ type Props = {
   showOutline?: boolean;
   onOutlineChange?: (visible: boolean) => void;
   onScrollToParagraph?: (paragraphId: string) => void;
+  /** Focus this math node on mount / when the id changes (e.g. answer field). */
+  defaultFocusMathNodeId?: string | null;
 };
 
 const layoutShellClass: Record<EditorLayout, string> = {
@@ -228,6 +236,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
     showOutline = false,
     onOutlineChange,
     onScrollToParagraph,
+    defaultFocusMathNodeId = null,
   },
   ref
 ) {
@@ -261,6 +270,10 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
     paragraphId: string;
     nodeId: string;
   } | null>(null);
+  const [selectedInkStrokeIndices, setSelectedInkStrokeIndices] = useState<
+    number[]
+  >([]);
+  const [inkMathDialogOpen, setInkMathDialogOpen] = useState(false);
 
   const [editorMode, setEditorMode] = useState<EditorMode>("select");
   const [inkColor, setInkColor] = useState(DEFAULT_INK_STROKE_COLOR);
@@ -1618,7 +1631,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
 
   const insertMathAtCaret = useCallback(async () => {
     const root = editorAreaRef.current;
-    const position = resolveInsertPosition();
+    let position = resolveInsertPosition();
 
     if (!position || !root) {
       return null;
@@ -1633,14 +1646,37 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
       root
     );
 
-    const paragraph = document.paragraphs.find(
-      (item) => item.id === position.paragraphId
+    let paragraph = document.paragraphs.find(
+      (item) => item.id === position!.paragraphId
     );
-    const textNode = paragraph?.children.find(
-      (item) => item.id === position.nodeId
+    let textNode = paragraph?.children.find(
+      (item) => item.id === position!.nodeId
     );
 
+    // Caret may sit on a math field — use the last text node in the document.
     if (!textNode || textNode.type !== "text") {
+      let found = false;
+      for (let i = document.paragraphs.length - 1; i >= 0 && !found; i--) {
+        const p = document.paragraphs[i];
+        for (let j = p.children.length - 1; j >= 0; j--) {
+          const child = p.children[j];
+          if (child.type === "text") {
+            paragraph = p;
+            textNode = child;
+            position = {
+              paragraphId: p.id,
+              nodeId: child.id,
+              offset: child.text.length,
+              liveText: child.text,
+            };
+            found = true;
+            break;
+          }
+        }
+      }
+    }
+
+    if (!textNode || textNode.type !== "text" || !paragraph || !position) {
       return null;
     }
 
@@ -2254,7 +2290,17 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
 
   const handleInkSelect = useCallback(
     (paragraphId: string, nodeId: string) => {
-      setSelectedInk({ paragraphId, nodeId });
+      setSelectedInk((current) => {
+        if (
+          current?.paragraphId === paragraphId &&
+          current?.nodeId === nodeId
+        ) {
+          return current;
+        }
+
+        setSelectedInkStrokeIndices([]);
+        return { paragraphId, nodeId };
+      });
       setSelectedImage(null);
       setSelectedNodeId(nodeId);
       clearSessionSelection();
@@ -2269,6 +2315,16 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
       });
     },
     [clearSessionSelection]
+  );
+
+  const handleInkStrokeSelectionChange = useCallback(
+    (paragraphId: string, nodeId: string, indices: number[]) => {
+      setSelectedInk({ paragraphId, nodeId });
+      setSelectedImage(null);
+      setSelectedNodeId(nodeId);
+      setSelectedInkStrokeIndices(indices);
+    },
+    []
   );
 
   const handleInkStrokesChange = useCallback(
@@ -2383,6 +2439,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
 
       update(nextDocument);
       setSelectedInk(null);
+      setSelectedInkStrokeIndices([]);
       setSelectedNodeId(null);
 
       if (restoreTarget) {
@@ -2420,6 +2477,96 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
       );
     },
     [selectedInk]
+  );
+
+  const handleOpenInkMathDialog = useCallback(() => {
+    setInkMathDialogOpen(true);
+  }, []);
+
+  const handleCancelInkMathConversion = useCallback(() => {
+    setInkMathDialogOpen(false);
+  }, []);
+
+  const handleAcceptInkMathConversion = useCallback(
+    async (latex: string) => {
+      const trimmed = latex.trim();
+      if (!trimmed) {
+        return;
+      }
+
+      // Dialog steals focus — drop DOM selection so insert falls back to
+      // stored caret / last text node instead of failing silently.
+      try {
+        window.getSelection()?.removeAllRanges();
+      } catch {
+        // ignore
+      }
+
+      let mathId = await insertMathAtCaret();
+      let workingDocument = documentRef.current;
+
+      if (!mathId) {
+        let paragraphId: string | null = null;
+        let nodeId: string | null = null;
+        let offset = 0;
+
+        for (let i = workingDocument.paragraphs.length - 1; i >= 0; i--) {
+          const paragraph = workingDocument.paragraphs[i];
+          for (let j = paragraph.children.length - 1; j >= 0; j--) {
+            const child = paragraph.children[j];
+            if (child.type === "text") {
+              paragraphId = paragraph.id;
+              nodeId = child.id;
+              offset = child.text.length;
+              break;
+            }
+          }
+          if (paragraphId) {
+            break;
+          }
+        }
+
+        if (!paragraphId || !nodeId) {
+          return;
+        }
+
+        const result = insertMath(
+          workingDocument,
+          paragraphId,
+          nodeId,
+          offset
+        );
+        mathId = result.insertedNodeId;
+        workingDocument = result.document;
+        cursor.current.setNode(paragraphId, mathId, 0);
+      }
+
+      let paragraphId =
+        cursor.current.get()?.paragraphId ??
+        null;
+
+      if (!paragraphId) {
+        for (const paragraph of workingDocument.paragraphs) {
+          if (paragraph.children.some((child) => child.id === mathId)) {
+            paragraphId = paragraph.id;
+            break;
+          }
+        }
+      }
+
+      if (!paragraphId) {
+        setInkMathDialogOpen(false);
+        return;
+      }
+
+      recordHistoryBeforeChange();
+      update(updateMath(workingDocument, paragraphId, mathId, trimmed));
+      setAutoFocusMathId(mathId);
+      setSelectedNodeId(mathId);
+      setInkMathDialogOpen(false);
+      await waitForMathField(mathId);
+    },
+    [insertMathAtCaret, waitForMathField]
   );
 
   const handleInkMoveStart = useCallback(
@@ -2615,6 +2762,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
     onAlignInk: handleInkAlign,
     hasSelectedInk: () => Boolean(selectedInk),
     getSelectedInkAlign,
+    onConvertInkToMath: handleOpenInkMathDialog,
     onDeleteEntireContent: handleDeleteEntireContent,
     ensureMathFocus,
   };
@@ -2641,6 +2789,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
     onAlignInk: handleInkAlign,
     hasSelectedInk: () => Boolean(selectedInk),
     getSelectedInkAlign,
+    onConvertInkToMath: handleOpenInkMathDialog,
   }), [
     commitDocument,
     insertMathAtCaret,
@@ -2655,6 +2804,8 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
     handleInkAlign,
     selectedInk,
     getSelectedInkAlign,
+    handleOpenInkMathDialog,
+    handleAcceptInkMathConversion,
     handleDeleteEntireContent,
     ensureMathFocus,
     scrollToParagraph,
@@ -2689,6 +2840,14 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
 
     return () => window.clearTimeout(timer);
   }, [autoFocusMathId]);
+
+  useEffect(() => {
+    if (!defaultFocusMathNodeId) {
+      return;
+    }
+
+    setAutoFocusMathId(defaultFocusMathNodeId);
+  }, [defaultFocusMathNodeId, sessionId]);
 
   useEffect(() => {
     const root = editorAreaRef.current;
@@ -2767,7 +2926,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
 
   return (
     <div
-      className={`overflow-hidden rounded-xl border border-zinc-700 bg-zinc-800 ${layoutShellClass[layout]} ${className}`.trim()}
+      className={`overflow-hidden rounded-xl border border-zinc-300 bg-white ${layoutShellClass[layout]} ${className}`.trim()}
     >
       {!hideToolbar ? (
         <Toolbar
@@ -2787,6 +2946,7 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
           onAlignInk={handleInkAlign}
           hasSelectedInk={Boolean(selectedInk)}
           selectedInkAlign={getSelectedInkAlign()}
+          onConvertInkToMath={handleOpenInkMathDialog}
           onDuplicateBlocks={handleDuplicateBlocks}
           onMoveBlocksUp={() => handleMoveBlocks(-1)}
           onMoveBlocksDown={() => handleMoveBlocks(1)}
@@ -2979,6 +3139,8 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
           onImageRemove={handleImageRemove}
           onImageMoveStart={handleImageMoveStart}
           onInkSelect={handleInkSelect}
+          onInkStrokeSelectionChange={handleInkStrokeSelectionChange}
+          selectedInkStrokeIndices={selectedInkStrokeIndices}
           onInkStrokesChange={handleInkStrokesChange}
           onInkResize={handleInkResize}
           onInkRemove={handleInkRemove}
@@ -3013,14 +3175,24 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
               });
               setSelectedInk(null);
             } else if (node?.type === "ink" && paragraph) {
-              setSelectedInk({
-                paragraphId: paragraph.id,
-                nodeId,
+              setSelectedInk((current) => {
+                if (
+                  current?.paragraphId === paragraph.id &&
+                  current?.nodeId === nodeId
+                ) {
+                  return current;
+                }
+                setSelectedInkStrokeIndices([]);
+                return {
+                  paragraphId: paragraph.id,
+                  nodeId,
+                };
               });
               setSelectedImage(null);
             } else {
               setSelectedImage(null);
               setSelectedInk(null);
+              setSelectedInkStrokeIndices([]);
             }
 
             setSelectedNodeId(nodeId);
@@ -3043,6 +3215,16 @@ const Editor = forwardRef<EditorHandle, Props>(function Editor(
           scrollToParagraph(paragraphId);
         }}
       />
+
+      {inkMathDialogOpen ? (
+        <ConvertInkToMathDialog
+          open
+          onAccept={(latex) => {
+            void handleAcceptInkMathConversion(latex);
+          }}
+          onCancel={handleCancelInkMathConversion}
+        />
+      ) : null}
     </div>
   );
 });

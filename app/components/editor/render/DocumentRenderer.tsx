@@ -180,6 +180,18 @@ type Props = {
 
   ) => void;
 
+  onInkStrokeSelectionChange?: (
+
+    paragraphId: string,
+
+    nodeId: string,
+
+    indices: number[]
+
+  ) => void;
+
+  selectedInkStrokeIndices?: number[];
+
   onInkStrokesChange?: (
 
     paragraphId: string,
@@ -313,6 +325,10 @@ export default function DocumentRenderer({
   onImageMoveStart,
 
   onInkSelect,
+
+  onInkStrokeSelectionChange,
+
+  selectedInkStrokeIndices = [],
 
   onInkStrokesChange,
 
@@ -513,6 +529,10 @@ export default function DocumentRenderer({
         onImageMoveStart={onImageMoveStart}
 
         onInkSelect={onInkSelect}
+
+        onInkStrokeSelectionChange={onInkStrokeSelectionChange}
+
+        selectedInkStrokeIndices={selectedInkStrokeIndices}
 
         onInkStrokesChange={onInkStrokesChange}
 

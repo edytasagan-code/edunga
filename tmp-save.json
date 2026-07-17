@@ -1,0 +1,15 @@
+{
+  "klasaId":"1lo",
+  "dzialId":"zbiory-liczbowe",
+  "tematId":"zbior-dzialania",
+  "typ":"otwarte",
+  "poziom":1,
+  "punkty":1,
+  "czas":1,
+  "warianty":[{
+    "tresc":{"version":1,"paragraphs":[{"id":"p1","children":[{"id":"t1","type":"text","text":"save-regression-check"}]}]},
+    "rozwiazanie":{"version":1,"paragraphs":[]},
+    "odpowiedz":{"version":1,"paragraphs":[]}
+  }],
+  "tagi":[]
+}

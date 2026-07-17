@@ -88,7 +88,7 @@ const TaskEditor = forwardRef<EditorHandle, Props>(function TaskEditor(
 
   return (
 
-    <div className="task-editor-workspace__primary flex min-h-0 flex-1 flex-col">
+    <div className="task-editor-workspace__primary flex flex-col">
 
       <h2 className="task-editor-section__title">Treść zadania</h2>
 

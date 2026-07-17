@@ -1,0 +1,194 @@
+.home-page {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-height: 100dvh;
+  background-color: #d3cec5;
+  isolation: isolate;
+}
+
+/* Left navigation panel (50%) */
+.home-page__nav {
+  flex: 0 0 50%;
+  max-width: 50%;
+  z-index: 1;
+  background: transparent;
+}
+
+/* Right mural panel (50%) */
+.home-page__hero {
+  flex: 0 0 50%;
+  max-width: 50%;
+  min-width: 0;
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Dashboard as nav panel content */
+.home-page .dashboard {
+  position: relative;
+  z-index: 1;
+  min-height: auto;
+  overflow: visible;
+  background: transparent;
+  padding: 1.5rem 1.25rem 2rem;
+  color: #ffffff;
+}
+
+.home-page .dashboard__doodle {
+  display: none;
+}
+
+.home-page .dashboard__container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.home-page .dashboard__header {
+  order: 1;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.home-page .dashboard__brand-name {
+  color: #ffffff;
+}
+
+.home-page .dashboard__brand-tagline {
+  display: block;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.home-page .dashboard__intro {
+  display: none;
+}
+
+.home-page .dashboard__grid {
+  order: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.home-page .dashboard-recent {
+  order: 3;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+/* Smaller cards (dimensions only, no style changes) */
+.home-page .dashboard-card {
+  min-height: 6.65rem;
+  gap: 0.35rem;
+  padding: 0.72rem 0.72rem 0.78rem;
+}
+
+.home-page .dashboard-card__clip {
+  width: 0.45rem;
+  height: 0.45rem;
+}
+
+.home-page .dashboard-card__clip--tl,
+.home-page .dashboard-card__clip--tr {
+  top: 0.3rem;
+}
+
+.home-page .dashboard-card__clip--tl,
+.home-page .dashboard-card__clip--bl {
+  left: 0.3rem;
+}
+
+.home-page .dashboard-card__clip--tr,
+.home-page .dashboard-card__clip--br {
+  right: 0.3rem;
+}
+
+.home-page .dashboard-card__clip--bl,
+.home-page .dashboard-card__clip--br {
+  bottom: 0.3rem;
+}
+
+.home-page .dashboard-card__icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+@media (max-width: 719px) {
+  .home-page {
+    flex-direction: column;
+  }
+
+  .home-page__nav {
+    flex: none;
+    max-width: none;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    position: relative;
+  }
+
+  .home-page__hero {
+    flex: none;
+    height: min(50dvh, 28rem);
+    min-height: min(50dvh, 28rem);
+    position: relative;
+  }
+
+  .home-page .dashboard__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 720px) and (max-width: 960px) {
+  .home-page .dashboard__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Full HD (1920×1080) — vertically centered nav content */
+@media (min-width: 1920px) {
+  .home-page .dashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 2.5rem 2.75rem 2.5rem 3.25rem;
+  }
+
+  .home-page .dashboard__container {
+    max-width: 38rem;
+  }
+
+  .home-page .dashboard__header {
+    margin-bottom: 1.75rem;
+  }
+
+  .home-page .dashboard__grid {
+    gap: 1rem;
+  }
+
+  .home-page .dashboard-card {
+    min-height: 8.25rem;
+    gap: 0.45rem;
+    padding: 0.95rem 0.95rem 1rem;
+  }
+
+  .home-page .dashboard-card__icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .home-page .dashboard-recent {
+    margin-top: 1.5rem;
+  }
+}

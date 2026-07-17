@@ -10,7 +10,11 @@ import "mathlive";
 import "mathlive/static.css";
 import type { MathfieldElement } from "mathlive";
 
-import { registerMathField, unregisterMathField } from "./commands";
+import {
+  focusMathField,
+  registerMathField,
+  unregisterMathField,
+} from "./commands";
 import {
   createMathBoundaryState,
   type MathBoundaryState,
@@ -261,8 +265,20 @@ export default function MathField({
       return;
     }
 
-    registerMathField(mf);
-    mf.focus();
+    let cancelled = false;
+    // Wait a frame so MathLive finishes upgrading the custom element.
+    const frame = window.requestAnimationFrame(() => {
+      if (cancelled || !mf.isConnected) {
+        return;
+      }
+
+      focusMathField(mf);
+    });
+
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frame);
+    };
   }, [autoFocus, mathfield]);
 
   return (

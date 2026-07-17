@@ -19,6 +19,14 @@ import ShortAnswer from "./ShortAnswer";
 import VariantTabs from "./VariantTabs";
 import "./task-editor-layout.css";
 
+import EdungaWatermark from "@/app/components/brand/EdungaWatermark";
+import {
+  createEmptyAnswerDocument,
+  normalizeAnswerDocument,
+  shouldLockSolutionFirstLine,
+  syncAnswerToSolution,
+} from "@/app/lib/answerDocument";
+
 import {
   MAX_VARIANTS,
   normalizeVariants,
@@ -70,21 +78,50 @@ function loadDocument(value: unknown): EditorDocument {
   return ensureDocumentInlineEditing(document);
 }
 
+function loadAnswerDocument(
+  value: unknown,
+  seed?: string
+): EditorDocument {
+  const document =
+    parseEditorDocument(value) ?? createEmptyAnswerDocument(seed);
+
+  return normalizeAnswerDocument(
+    ensureDocumentInlineEditing(document),
+    seed
+  );
+}
+
+/** Treść starts with an inline math field (same as Odpowiedź). */
+function loadTrescDocument(
+  value: unknown,
+  seed?: string
+): EditorDocument {
+  return loadAnswerDocument(value, seed);
+}
+
 function createDefaultVariants(): VariantDocuments[] {
+  const odpowiedz = createEmptyAnswerDocument("odpowiedz");
+
   return [
     {
-      tresc: createEmptyDocument("tresc"),
-      rozwiazanie: createEmptyDocument("rozwiazanie"),
-      odpowiedz: createEmptyDocument("odpowiedz"),
+      tresc: createEmptyAnswerDocument("tresc"),
+      rozwiazanie: syncAnswerToSolution(
+        odpowiedz,
+        createEmptyDocument("rozwiazanie")
+      ),
+      odpowiedz,
     },
   ];
 }
 
 function variantsFromResponse(data: ZadanieResponse): VariantDocuments[] {
-  return normalizeVariants(data).map((variant) => ({
-    tresc: loadDocument(variant.tresc),
+  return normalizeVariants(data).map((variant, index) => ({
+    tresc: loadTrescDocument(variant.tresc, `tresc-${index}`),
     rozwiazanie: loadDocument(variant.rozwiazanie),
-    odpowiedz: loadDocument(variant.odpowiedz),
+    odpowiedz: loadAnswerDocument(
+      variant.odpowiedz,
+      `odpowiedz-${index}`
+    ),
   }));
 }
 
@@ -92,12 +129,16 @@ function cloneVariantDocuments(
   variant: VariantDocuments
 ): VariantDocuments {
   return {
-    tresc: loadDocument(JSON.parse(JSON.stringify(variant.tresc))),
+    tresc: loadTrescDocument(
+      JSON.parse(JSON.stringify(variant.tresc)),
+      "tresc-clone"
+    ),
     rozwiazanie: loadDocument(
       JSON.parse(JSON.stringify(variant.rozwiazanie))
     ),
-    odpowiedz: loadDocument(
-      JSON.parse(JSON.stringify(variant.odpowiedz))
+    odpowiedz: loadAnswerDocument(
+      JSON.parse(JSON.stringify(variant.odpowiedz)),
+      `odpowiedz-clone`
     ),
   };
 }
@@ -172,6 +213,8 @@ export default function TaskForm({ taskId }: Props) {
   const trescEditorRef = useRef<EditorHandle | null>(null);
   const odpowiedzEditorRef = useRef<EditorHandle | null>(null);
   const rozwiazanieEditorRef = useRef<EditorHandle | null>(null);
+  const solutionFirstLineLockedRef = useRef<Record<number, boolean>>({});
+  const syncingAnswerToSolutionRef = useRef(false);
 
   const refreshToolbar = useCallback(() => {
     setToolbarRevision((revision) => revision + 1);
@@ -274,7 +317,19 @@ export default function TaskForm({ taskId }: Props) {
           setKod(data.kod);
         }
 
-        setVariants(variantsFromResponse(data));
+        const loaded = variantsFromResponse(data);
+        loaded.forEach((variant, index) => {
+          if (
+            shouldLockSolutionFirstLine(
+              variant.odpowiedz,
+              variant.rozwiazanie
+            )
+          ) {
+            solutionFirstLineLockedRef.current[index] = true;
+          }
+        });
+
+        setVariants(loaded);
         setActiveVariantIndex(0);
       } catch {
         setLoadError("Nie udało się wczytać zadania.");
@@ -298,14 +353,61 @@ export default function TaskForm({ taskId }: Props) {
     );
   }
 
+  function handleOdpowiedzChange(value: EditorDocument) {
+    setVariants((prev) =>
+      prev.map((variant, index) => {
+        if (index !== activeVariantIndex) {
+          return variant;
+        }
+
+        if (solutionFirstLineLockedRef.current[index]) {
+          return { ...variant, odpowiedz: value };
+        }
+
+        syncingAnswerToSolutionRef.current = true;
+        const rozwiazanie = syncAnswerToSolution(
+          value,
+          variant.rozwiazanie
+        );
+        syncingAnswerToSolutionRef.current = false;
+
+        return { ...variant, odpowiedz: value, rozwiazanie };
+      })
+    );
+  }
+
+  function handleRozwiazanieChange(value: EditorDocument) {
+    setVariants((prev) =>
+      prev.map((variant, index) => {
+        if (index !== activeVariantIndex) {
+          return variant;
+        }
+
+        if (!syncingAnswerToSolutionRef.current) {
+          if (
+            shouldLockSolutionFirstLine(variant.odpowiedz, value)
+          ) {
+            solutionFirstLineLockedRef.current[index] = true;
+          }
+        }
+
+        return { ...variant, rozwiazanie: value };
+      })
+    );
+  }
+
   function addVariant() {
     if (variants.length >= MAX_VARIANTS) {
       return;
     }
 
     const source = variants[activeVariantIndex] ?? variants[0];
+    const newIndex = variants.length;
+    solutionFirstLineLockedRef.current[newIndex] =
+      solutionFirstLineLockedRef.current[activeVariantIndex] ??
+      false;
     setVariants((prev) => [...prev, cloneVariantDocuments(source)]);
-    setActiveVariantIndex(variants.length);
+    setActiveVariantIndex(newIndex);
   }
 
   async function flushEditorState() {
@@ -431,7 +533,10 @@ export default function TaskForm({ taskId }: Props) {
 
   if (loading) {
     return (
-      <div className="rounded-xl bg-[#1E2128] p-6 text-white">
+      <div
+        className="rounded-xl border border-zinc-800 p-6 text-zinc-100"
+        style={{ background: "#0d0d0d" }}
+      >
         Ładowanie zadania...
       </div>
     );
@@ -439,7 +544,10 @@ export default function TaskForm({ taskId }: Props) {
 
   if (!mounted) {
     return (
-      <div className="rounded-xl bg-[#1E2128] p-6 text-white">
+      <div
+        className="rounded-xl border border-zinc-800 p-6 text-zinc-100"
+        style={{ background: "#0d0d0d" }}
+      >
         Ładowanie edytora...
       </div>
     );
@@ -447,34 +555,49 @@ export default function TaskForm({ taskId }: Props) {
 
   if (loadError) {
     return (
-      <div className="rounded-xl bg-[#1E2128] p-6 text-white">
+      <div
+        className="rounded-xl border border-zinc-800 p-6 text-zinc-100"
+        style={{ background: "#0d0d0d" }}
+      >
         {loadError}
       </div>
     );
   }
 
+  const isPazdroSource = zrodlo === "pazdro";
+
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-y-auto rounded-xl bg-[#1E2128] p-6">
-      <div className="task-editor-form-chrome mb-4 flex flex-shrink-0 flex-wrap items-center gap-x-4 gap-y-2">
-        <h1 className="text-4xl font-bold text-white">
-          {isEditing ? "Edytuj zadanie" : "Nowe zadanie"}
-        </h1>
+    <div
+      className="relative flex flex-col rounded-xl border border-zinc-800 p-6"
+      style={{ background: "#0d0d0d", color: "#d4d4d8" }}
+    >
+      <EdungaWatermark />
+      <div
+        className="task-editor-form-chrome flex flex-shrink-0 flex-col gap-2.5"
+        style={{ marginBottom: 20 }}
+      >
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 className="task-editor-form-chrome__title">
+            {isEditing ? "Edytuj zadanie" : "Nowe zadanie"}
+          </h1>
 
-        {kod && (
-          <span className="rounded-lg bg-zinc-900 px-3 py-1 font-mono text-lg text-yellow-300">
-            {kod}
-          </span>
-        )}
+          {kod && (
+            <span className="rounded border border-amber-500/40 bg-amber-500/10 px-2.5 py-0.5 font-mono text-sm text-amber-300">
+              {kod}
+            </span>
+          )}
+        </div>
 
-        <div className="flex flex-wrap items-center gap-3 border-l border-zinc-700 pl-4">
-          <label className="flex items-center gap-2 text-sm text-zinc-400">
-            <span className="whitespace-nowrap">Źródło</span>
+        <div className="task-editor-form-chrome__row">
+          <label className="task-editor-form-chrome__label">
+            <span style={{ color: "#d4d4d8" }}>Źródło</span>
             <select
               value={zrodlo}
               onChange={(event) =>
                 setZrodlo(event.target.value)
               }
-              className="rounded-lg bg-zinc-800 px-2 py-1.5 text-sm text-white outline-none"
+              className="task-editor-form-chrome__field task-editor-form-chrome__select-sm"
+              style={{ color: "#d4d4d8" }}
             >
               <option value="">—</option>
               {TASK_SOURCE_OPTIONS.map((option) => (
@@ -485,8 +608,42 @@ export default function TaskForm({ taskId }: Props) {
             </select>
           </label>
 
-          <label className="flex items-center gap-2 text-sm text-zinc-400">
-            <span className="whitespace-nowrap">Identyfikator</span>
+          {isPazdroSource ? (
+            <>
+              <select
+                value={dzialId}
+                onChange={(e) => setDzialId(e.target.value)}
+                disabled={!klasaId || loadingDzialy}
+                className="task-editor-form-chrome__field task-editor-form-chrome__select-md"
+              >
+                <option value="">Dział</option>
+
+                {dzialyKlasy.map((d) => (
+                  <option key={d.id} value={d.id}>
+                    {d.nazwa}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={tematId}
+                onChange={(e) => setTematId(e.target.value)}
+                disabled={!dzialId || loadingTematy}
+                className="task-editor-form-chrome__field task-editor-form-chrome__select-md"
+              >
+                <option value="">Temat (Pazdro)</option>
+
+                {tematyDzialu.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.nazwa}
+                  </option>
+                ))}
+              </select>
+            </>
+          ) : null}
+
+          <label className="task-editor-form-chrome__label">
+            <span style={{ color: "#d4d4d8" }}>Identyfikator</span>
             <input
               type="text"
               value={identyfikator}
@@ -495,25 +652,29 @@ export default function TaskForm({ taskId }: Props) {
               }
               placeholder="np. 5.23"
               maxLength={64}
-              className="w-36 rounded-lg bg-zinc-800 px-2 py-1.5 text-sm text-white outline-none placeholder:text-zinc-500"
+              className="task-editor-form-chrome__field task-editor-form-chrome__identyfikator"
+              style={{ color: "#d4d4d8" }}
             />
           </label>
         </div>
       </div>
 
-      <div className="task-editor-form-chrome mb-6 flex-shrink-0 space-y-4">
+      {/* Visible gap before Klasyfikacja */}
+      <div aria-hidden style={{ height: 14, flexShrink: 0 }} />
+
+      <div className="task-editor-form-chrome mb-0 flex-shrink-0 space-y-3.5">
         <div>
-          <p className="mb-2 text-sm font-medium text-zinc-300">
+          <p className="task-editor-form-chrome__section">
             Klasyfikacja programowa
           </p>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="task-editor-form-chrome__row">
             <select
               value={mainTopicId}
               onChange={(e) => setMainTopicId(e.target.value)}
               disabled={loadingMainTopics}
               required
               aria-required="true"
-              className="rounded-lg bg-zinc-800 p-3 text-white disabled:opacity-50"
+              className="task-editor-form-chrome__field task-editor-form-chrome__field--required task-editor-form-chrome__select-md"
             >
               <option value="">Temat główny *</option>
               {mainTopics.map((topic) => (
@@ -527,7 +688,7 @@ export default function TaskForm({ taskId }: Props) {
               value={subtopicId}
               onChange={(e) => setSubtopicId(e.target.value)}
               disabled={!mainTopicId || loadingSubtopics}
-              className="rounded-lg bg-zinc-800 p-3 text-white disabled:opacity-50"
+              className="task-editor-form-chrome__field task-editor-form-chrome__select-md"
             >
               <option value="">Podtemat (opcjonalnie)</option>
               {subtopics.map((sub) => (
@@ -543,21 +704,14 @@ export default function TaskForm({ taskId }: Props) {
               onChange={(e) => setZagadnienie(e.target.value)}
               placeholder="Zagadnienie (opcjonalnie)"
               maxLength={200}
-              className="rounded-lg bg-zinc-800 p-3 text-white outline-none placeholder:text-zinc-500"
+              className="task-editor-form-chrome__field task-editor-form-chrome__select-md"
             />
-          </div>
-        </div>
 
-        <div>
-          <p className="mb-2 text-sm font-medium text-zinc-500">
-            Program źródłowy (Pazdro / Excel) — metadane
-          </p>
-          <div className="grid grid-cols-3 gap-4">
             <select
               value={klasaId}
               onChange={(e) => setKlasaId(e.target.value)}
               disabled={loadingKlasy}
-              className="rounded-lg bg-zinc-800 p-3 text-white disabled:opacity-50"
+              className="task-editor-form-chrome__field task-editor-form-chrome__klasa"
             >
               <option value="">Klasa</option>
 
@@ -567,44 +721,17 @@ export default function TaskForm({ taskId }: Props) {
                 </option>
               ))}
             </select>
-
-            <select
-              value={dzialId}
-              onChange={(e) => setDzialId(e.target.value)}
-              disabled={!klasaId || loadingDzialy}
-              className="rounded-lg bg-zinc-800 p-3 text-white disabled:opacity-50"
-            >
-              <option value="">Dział</option>
-
-              {dzialyKlasy.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.nazwa}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={tematId}
-              onChange={(e) => setTematId(e.target.value)}
-              disabled={!dzialId || loadingTematy}
-              className="rounded-lg bg-zinc-800 p-3 text-white disabled:opacity-50"
-            >
-              <option value="">Temat (Pazdro)</option>
-
-              {tematyDzialu.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.nazwa}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div
+          className="task-editor-form-chrome__row"
+          style={{ paddingTop: 12 }}
+        >
           <select
             value={typ}
             onChange={(e) => setTyp(e.target.value)}
-            className="rounded-lg bg-zinc-800 p-3 text-white"
+            className="task-editor-form-chrome__field task-editor-form-chrome__select-md"
           >
             <option value="">Typ zadania</option>
             <option value="otwarte">Otwarte</option>
@@ -619,7 +746,7 @@ export default function TaskForm({ taskId }: Props) {
           <select
             value={poziom}
             onChange={(e) => setPoziom(e.target.value)}
-            className="rounded-lg bg-zinc-800 p-3 text-white"
+            className="task-editor-form-chrome__field task-editor-form-chrome__select-sm"
           >
             <option value="">Poziom</option>
             <option value="1">★☆☆☆☆</option>
@@ -629,25 +756,31 @@ export default function TaskForm({ taskId }: Props) {
             <option value="5">★★★★★</option>
           </select>
 
-          <input
-            type="number"
-            value={punkty}
-            onChange={(e) => setPunkty(e.target.value)}
-            placeholder="Punkty"
-            className="rounded-lg bg-zinc-800 p-3 text-white outline-none"
-          />
+          <label className="task-editor-form-chrome__label">
+            <span style={{ color: "#d4d4d8" }}>Punkty</span>
+            <input
+              type="number"
+              value={punkty}
+              onChange={(e) => setPunkty(e.target.value)}
+              className="task-editor-form-chrome__field task-editor-form-chrome__num"
+              style={{ color: "#d4d4d8" }}
+            />
+          </label>
 
-          <input
-            type="number"
-            value={czas}
-            onChange={(e) => setCzas(e.target.value)}
-            placeholder="Czas (min)"
-            className="rounded-lg bg-zinc-800 p-3 text-white outline-none"
-          />
+          <label className="task-editor-form-chrome__label">
+            <span style={{ color: "#d4d4d8" }}>Czas (min)</span>
+            <input
+              type="number"
+              value={czas}
+              onChange={(e) => setCzas(e.target.value)}
+              className="task-editor-form-chrome__field task-editor-form-chrome__num"
+              style={{ color: "#d4d4d8" }}
+            />
+          </label>
         </div>
       </div>
 
-      <div className="task-editor-form-chrome mt-6 flex-shrink-0">
+      <div className="task-editor-form-chrome mb-0 flex-shrink-0">
         <VariantTabs
           count={variants.length}
           activeIndex={activeVariantIndex}
@@ -658,7 +791,7 @@ export default function TaskForm({ taskId }: Props) {
 
       {activeToolbar && !solutionExpanded ? (
         <div
-          className="task-editor-toolbar mt-4 overflow-hidden rounded-xl border border-zinc-700"
+          className="task-editor-toolbar"
           onMouseDown={() => {
             const surface = activeToolbar.editorRoot.current;
 
@@ -674,7 +807,9 @@ export default function TaskForm({ taskId }: Props) {
             onInsertImage={activeToolbar.onInsertImage}
             onReplaceImage={() => activeToolbar.onReplaceImage?.()}
             onAlignImage={(align) => activeToolbar.onAlignImage?.(align)}
-            hasSelectedImage={activeToolbar.hasSelectedImage?.() ?? false}
+            hasSelectedImage={
+              activeToolbar.hasSelectedImage?.() ?? false
+            }
             selectedImageAlign={
               activeToolbar.getSelectedImageAlign?.() ?? "left"
             }
@@ -697,49 +832,56 @@ export default function TaskForm({ taskId }: Props) {
             selectedInkAlign={
               activeToolbar.getSelectedInkAlign?.() ?? "left"
             }
+            onConvertInkToMath={() => {
+              activeToolbar.onConvertInkToMath?.();
+              refreshToolbar();
+            }}
             onDuplicateBlocks={() => activeToolbar.duplicateBlocks?.()}
             onMoveBlocksUp={() => activeToolbar.moveBlocksUp?.()}
             onMoveBlocksDown={() => activeToolbar.moveBlocksDown?.()}
             onToggleOutline={() => activeToolbar.toggleOutline?.()}
-            outlineVisible={activeToolbar.getOutlineVisible?.() ?? false}
-            hasBlockSelection={activeToolbar.hasBlockSelection?.() ?? false}
+            outlineVisible={
+              activeToolbar.getOutlineVisible?.() ?? false
+            }
+            hasBlockSelection={
+              activeToolbar.hasBlockSelection?.() ?? false
+            }
           />
         </div>
       ) : null}
 
-      <div className="task-editor-workspace mt-4 min-h-0">
-        <TaskEditor
-          key={`tresc-${activeVariantIndex}`}
-          ref={trescEditorRef}
-          value={currentVariant.tresc}
-          onChange={(value) => updateCurrentVariant({ tresc: value })}
-          onActivate={handleEditorActivate}
-        />
+      <div className="task-editor-workspace task-editor-workspace--teacher mt-4">
+        <div className="task-editor-workspace__left">
+          <TaskEditor
+            key={`tresc-${activeVariantIndex}`}
+            ref={trescEditorRef}
+            value={currentVariant.tresc}
+            onChange={(value) => updateCurrentVariant({ tresc: value })}
+            onActivate={handleEditorActivate}
+          />
 
-        <div className="task-editor-workspace__sidebar">
           <ShortAnswer
             key={`odpowiedz-${activeVariantIndex}`}
             ref={odpowiedzEditorRef}
             value={currentVariant.odpowiedz}
-            onChange={(value) =>
-              updateCurrentVariant({ odpowiedz: value })
-            }
+            onChange={handleOdpowiedzChange}
             onActivate={handleEditorActivate}
+            variantSeed={`odpowiedz-${activeVariantIndex}`}
           />
+        </div>
 
+        <div className="task-editor-workspace__right">
           <SolutionEditor
             key={`rozwiazanie-${activeVariantIndex}`}
             ref={rozwiazanieEditorRef}
             value={currentVariant.rozwiazanie}
-            onChange={(value) =>
-              updateCurrentVariant({ rozwiazanie: value })
-            }
+            onChange={handleRozwiazanieChange}
             onActivate={handleEditorActivate}
             onExpandedChange={setSolutionExpanded}
             toolbar={
               activeToolbar ? (
                 <div
-                  className="task-editor-toolbar overflow-hidden rounded-xl border border-zinc-700"
+                  className="task-editor-toolbar"
                   onMouseDown={() => {
                     const surface = activeToolbar.editorRoot.current;
 
@@ -790,6 +932,10 @@ export default function TaskForm({ taskId }: Props) {
                     selectedInkAlign={
                       activeToolbar.getSelectedInkAlign?.() ?? "left"
                     }
+                    onConvertInkToMath={() => {
+                      activeToolbar.onConvertInkToMath?.();
+                      refreshToolbar();
+                    }}
                     onDuplicateBlocks={() =>
                       activeToolbar.duplicateBlocks?.()
                     }
@@ -816,10 +962,13 @@ export default function TaskForm({ taskId }: Props) {
         </div>
       </div>
 
-      <div className="task-editor-save-bar relative mt-4 flex flex-shrink-0 flex-col items-end gap-2 border-t border-zinc-700 bg-[#1E2128] pt-4">
+      <div
+        className="task-editor-save-bar relative mt-4 flex flex-shrink-0 flex-col items-end gap-2 border-t border-zinc-800 pt-4"
+        style={{ background: "#0d0d0d" }}
+      >
         {saveError ? (
           <p
-            className="w-full rounded-lg border border-red-500/50 bg-red-950/60 px-4 py-2 text-sm text-red-100"
+            className="w-full rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-800"
             role="alert"
           >
             {saveError}

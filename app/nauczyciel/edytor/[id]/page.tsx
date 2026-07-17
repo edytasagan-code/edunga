@@ -12,11 +12,20 @@ export default async function Page({ params }: Props) {
   const { id } = await params;
 
   return (
-    <main className="flex h-dvh flex-col overflow-hidden p-8">
-      <div className="flex min-h-0 flex-1 flex-col">
+    <main
+      className="box-border flex flex-col"
+      style={{
+        background: "#0d0d0d",
+        paddingTop: 40,
+        paddingRight: 48,
+        paddingBottom: 180,
+        paddingLeft: 48,
+      }}
+    >
+      <div className="flex w-full max-w-full flex-col">
         <Suspense
           fallback={
-            <div className="rounded-xl bg-[#1E2128] p-6 text-white">
+            <div className="rounded-xl border border-zinc-800 bg-[#0d0d0d] p-6 text-zinc-100">
               Ładowanie zadania...
             </div>
           }

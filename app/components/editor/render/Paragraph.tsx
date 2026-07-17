@@ -172,6 +172,18 @@ type Props = {
 
   ) => void;
 
+  onInkStrokeSelectionChange?: (
+
+    paragraphId: string,
+
+    nodeId: string,
+
+    indices: number[]
+
+  ) => void;
+
+  selectedInkStrokeIndices?: number[];
+
   onInkStrokesChange?: (
 
     paragraphId: string,
@@ -323,6 +335,10 @@ export default function Paragraph({
   onImageMoveStart,
 
   onInkSelect,
+
+  onInkStrokeSelectionChange,
+
+  selectedInkStrokeIndices = [],
 
   onInkStrokesChange,
 
@@ -1050,11 +1066,21 @@ export default function Paragraph({
 
                 }
 
+                selectedStrokeIndices={
+                  selectedNodeId === node.id
+                    ? selectedInkStrokeIndices
+                    : []
+                }
+
                 penMode={penMode}
                 eraserMode={eraserMode}
                 strokeColor={inkColor}
 
                 onSelect={(nodeId) => onInkSelect?.(id, nodeId)}
+
+                onStrokeSelectionChange={(nodeId, indices) =>
+                  onInkStrokeSelectionChange?.(id, nodeId, indices)
+                }
 
                 onStrokesChange={(nodeId, strokes) =>
 

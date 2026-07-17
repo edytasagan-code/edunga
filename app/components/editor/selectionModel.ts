@@ -1103,36 +1103,33 @@ function getDefaultInsertPosition(
   document: EditorDocument,
   editorRoot: HTMLElement
 ): ResolvedInsertPosition | null {
-  const paragraph = document.paragraphs[0];
+  // Prefer the last paragraph — more natural when inserting from dialogs.
+  for (let i = document.paragraphs.length - 1; i >= 0; i--) {
+    const paragraph = document.paragraphs[i];
+    if (!paragraph) {
+      continue;
+    }
 
-  if (!paragraph) {
-    return null;
+    for (let j = paragraph.children.length - 1; j >= 0; j--) {
+      const textNode = paragraph.children[j];
+      if (!textNode || textNode.type !== "text") {
+        continue;
+      }
+
+      const liveText =
+        readLiveTextFromNode(editorRoot, paragraph.id, textNode.id) ??
+        textNode.text;
+
+      return {
+        paragraphId: paragraph.id,
+        nodeId: textNode.id,
+        offset: liveText.length,
+        liveText,
+      };
+    }
   }
 
-  const textNode = paragraph.children.find(
-    (node) => node.type === "text"
-  );
-
-  if (!textNode || textNode.type !== "text") {
-    return null;
-  }
-
-  const liveText = readLiveTextFromNode(
-    editorRoot,
-    paragraph.id,
-    textNode.id
-  );
-
-  if (liveText === null) {
-    return null;
-  }
-
-  return {
-    paragraphId: paragraph.id,
-    nodeId: textNode.id,
-    offset: liveText.length,
-    liveText,
-  };
+  return null;
 }
 
 /**

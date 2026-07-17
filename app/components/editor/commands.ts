@@ -93,7 +93,24 @@ export function focusMathField(
   }
 
   registerMathField(field);
-  field.focus();
+
+  // MathLive can throw before the internal controller is ready
+  // (`Cannot read properties of undefined (reading 'options')`).
+  try {
+    field.focus();
+  } catch {
+    window.requestAnimationFrame(() => {
+      if (!field.isConnected) {
+        return;
+      }
+
+      try {
+        field.focus();
+      } catch {
+        // Leave unfocused — click still works.
+      }
+    });
+  }
 }
 
 export type { MathSymbolKey, MathTemplateKey };
@@ -113,7 +130,7 @@ function insertIntoActiveField(
 
   const hasPlaceholder = /#[0?@]/.test(latex);
 
-  field.focus();
+  focusMathField(field);
 
   return field.insert(latex, {
     selectionMode:

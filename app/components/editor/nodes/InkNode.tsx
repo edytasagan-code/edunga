@@ -16,6 +16,7 @@ import {
   findStrokeIndexAtPoint,
   pointsToSvgPath,
 } from "../core/inkStrokeUtils";
+import { strokeIntersectsRect } from "@/app/lib/ink-hwr/strokes";
 import type { ImageAlign, InkStroke } from "../types";
 
 type Props = {
@@ -28,7 +29,9 @@ type Props = {
   penMode?: boolean;
   eraserMode?: boolean;
   strokeColor?: string;
+  selectedStrokeIndices?: number[];
   onSelect?: (id: string) => void;
+  onStrokeSelectionChange?: (id: string, indices: number[]) => void;
   onStrokesChange?: (id: string, strokes: InkStroke[]) => void;
   onResize?: (id: string, width: number, height: number) => void;
   onRemove?: (id: string) => void;
@@ -56,7 +59,9 @@ export default function InkNode({
   penMode = false,
   eraserMode = false,
   strokeColor = DEFAULT_INK_STROKE_COLOR,
+  selectedStrokeIndices = [],
   onSelect,
+  onStrokeSelectionChange,
   onStrokesChange,
   onResize,
   onRemove,
@@ -73,6 +78,12 @@ export default function InkNode({
   const [resizing, setResizing] = useState(false);
   const [liveStrokes, setLiveStrokes] = useState<InkStroke[] | null>(null);
   const liveStrokesRef = useRef<InkStroke[] | null>(null);
+  const [marquee, setMarquee] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const resizeStateRef = useRef<{
     startX: number;
     startY: number;
@@ -89,6 +100,12 @@ export default function InkNode({
   const erasingRef = useRef<{
     pointerId: number;
   } | null>(null);
+  const marqueeRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    additive: boolean;
+  } | null>(null);
 
   const displayWidth = previewSize?.width ?? width;
   const displayHeight = previewSize?.height ?? height;
@@ -96,6 +113,8 @@ export default function InkNode({
   const canDraw = penMode;
   const canErase = eraserMode;
   const inkInteraction = canDraw || canErase;
+  const selectedStrokeSet = new Set(selectedStrokeIndices);
+  const canSelectStrokes = selected && !inkInteraction;
 
   const finishResize = useCallback(() => {
     const state = resizeStateRef.current;
@@ -249,6 +268,58 @@ export default function InkNode({
   }
 
   function handlePointerDown(event: ReactPointerEvent<SVGSVGElement>) {
+    if (canSelectStrokes) {
+      event.preventDefault();
+      event.stopPropagation();
+      onSelect?.(id);
+
+      const svg = svgRef.current;
+      if (!svg) {
+        return;
+      }
+
+      const point = clientPointToInkPointFromSvg(
+        svg,
+        event.clientX,
+        event.clientY,
+        displayWidth,
+        displayHeight
+      );
+
+      const hitIndex = findStrokeIndexAtPoint(displayStrokes, point, 16);
+
+      if (hitIndex !== -1) {
+        const next = new Set(selectedStrokeIndices);
+        if (event.shiftKey || event.ctrlKey || event.metaKey) {
+          if (next.has(hitIndex)) {
+            next.delete(hitIndex);
+          } else {
+            next.add(hitIndex);
+          }
+        } else if (next.has(hitIndex) && next.size === 1) {
+          next.clear();
+        } else {
+          next.clear();
+          next.add(hitIndex);
+        }
+        onStrokeSelectionChange?.(
+          id,
+          Array.from(next).sort((a, b) => a - b)
+        );
+        return;
+      }
+
+      marqueeRef.current = {
+        pointerId: event.pointerId,
+        startX: point.x,
+        startY: point.y,
+        additive: event.shiftKey || event.ctrlKey || event.metaKey,
+      };
+      setMarquee({ x: point.x, y: point.y, width: 0, height: 0 });
+      svg.setPointerCapture(event.pointerId);
+      return;
+    }
+
     if (!inkInteraction) {
       return;
     }
@@ -297,6 +368,31 @@ export default function InkNode({
   }
 
   function handlePointerMove(event: ReactPointerEvent<SVGSVGElement>) {
+    const marqueeState = marqueeRef.current;
+
+    if (marqueeState && marqueeState.pointerId === event.pointerId) {
+      const svg = svgRef.current;
+      if (!svg) {
+        return;
+      }
+
+      const point = clientPointToInkPointFromSvg(
+        svg,
+        event.clientX,
+        event.clientY,
+        displayWidth,
+        displayHeight
+      );
+
+      setMarquee({
+        x: marqueeState.startX,
+        y: marqueeState.startY,
+        width: point.x - marqueeState.startX,
+        height: point.y - marqueeState.startY,
+      });
+      return;
+    }
+
     const erasing = erasingRef.current;
 
     if (erasing && erasing.pointerId === event.pointerId) {
@@ -329,6 +425,57 @@ export default function InkNode({
   }
 
   function handlePointerUp(event: ReactPointerEvent<SVGSVGElement>) {
+    const marqueeState = marqueeRef.current;
+
+    if (marqueeState && marqueeState.pointerId === event.pointerId) {
+      event.preventDefault();
+
+      const svg = svgRef.current;
+      if (svg?.hasPointerCapture(event.pointerId)) {
+        svg.releasePointerCapture(event.pointerId);
+      }
+
+      const point = svg
+        ? clientPointToInkPointFromSvg(
+            svg,
+            event.clientX,
+            event.clientY,
+            displayWidth,
+            displayHeight
+          )
+        : { x: marqueeState.startX, y: marqueeState.startY };
+
+      const rect = {
+        x: marqueeState.startX,
+        y: marqueeState.startY,
+        width: point.x - marqueeState.startX,
+        height: point.y - marqueeState.startY,
+      };
+
+      const area = Math.abs(rect.width) * Math.abs(rect.height);
+      const next = marqueeState.additive
+        ? new Set(selectedStrokeIndices)
+        : new Set<number>();
+
+      if (area > 16) {
+        displayStrokes.forEach((stroke, index) => {
+          if (strokeIntersectsRect(stroke, rect)) {
+            next.add(index);
+          }
+        });
+        onStrokeSelectionChange?.(
+          id,
+          Array.from(next).sort((a, b) => a - b)
+        );
+      } else if (!marqueeState.additive) {
+        onStrokeSelectionChange?.(id, []);
+      }
+
+      marqueeRef.current = null;
+      setMarquee(null);
+      return;
+    }
+
     const erasing = erasingRef.current;
 
     if (erasing && erasing.pointerId === event.pointerId) {
@@ -363,7 +510,7 @@ export default function InkNode({
   }
 
   function handleCanvasMouseDown(event: ReactMouseEvent<SVGSVGElement>) {
-    if (inkInteraction) {
+    if (inkInteraction || canSelectStrokes) {
       return;
     }
 
@@ -386,6 +533,7 @@ export default function InkNode({
         ${selected ? "is-selected" : ""}
         ${canDraw ? "is-drawing" : ""}
         ${canErase ? "is-erasing" : ""}
+        ${canSelectStrokes ? "is-stroke-selecting" : ""}
       `}
     >
       <svg
@@ -395,7 +543,9 @@ export default function InkNode({
         height={displayHeight}
         preserveAspectRatio="xMidYMid meet"
         className="edunga-ink-node__canvas"
-        onPointerDown={inkInteraction ? handlePointerDown : undefined}
+        onPointerDown={
+          inkInteraction || canSelectStrokes ? handlePointerDown : undefined
+        }
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
@@ -408,18 +558,44 @@ export default function InkNode({
           stroke="#e4e4e7"
           strokeWidth={1}
         />
-        {displayStrokes.map((stroke, index) => (
-          <path
-            key={index}
-            d={pointsToSvgPath(stroke.points)}
-            fill="none"
-            stroke={stroke.color}
-            strokeWidth={Math.min(stroke.width, DEFAULT_INK_STROKE_WIDTH)}
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {displayStrokes.map((stroke, index) => {
+          const isStrokeSelected = selectedStrokeSet.has(index);
+          return (
+            <path
+              key={index}
+              d={pointsToSvgPath(stroke.points)}
+              fill="none"
+              stroke={isStrokeSelected ? "#2563eb" : stroke.color}
+              strokeWidth={Math.min(
+                isStrokeSelected
+                  ? Math.max(stroke.width, DEFAULT_INK_STROKE_WIDTH) + 0.75
+                  : stroke.width,
+                DEFAULT_INK_STROKE_WIDTH + (isStrokeSelected ? 1.5 : 0)
+              )}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+              opacity={
+                selectedStrokeIndices.length > 0 && !isStrokeSelected
+                  ? 0.35
+                  : 1
+              }
+            />
+          );
+        })}
+        {marquee ? (
+          <rect
+            x={Math.min(marquee.x, marquee.x + marquee.width)}
+            y={Math.min(marquee.y, marquee.y + marquee.height)}
+            width={Math.abs(marquee.width)}
+            height={Math.abs(marquee.height)}
+            fill="rgba(37, 99, 235, 0.12)"
+            stroke="#2563eb"
+            strokeWidth={1}
+            strokeDasharray="4 3"
             vectorEffect="non-scaling-stroke"
           />
-        ))}
+        ) : null}
       </svg>
 
       {selected && !inkInteraction ? (
