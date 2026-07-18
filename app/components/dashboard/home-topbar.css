@@ -1,6 +1,5 @@
-.home-topbar {
-  position: sticky;
-  top: 0;
+.home-topbar,
+.home-bottombar {
   z-index: 30;
   display: flex;
   align-items: center;
@@ -11,7 +10,20 @@
   background: rgb(211 206 197 / 0.52);
   -webkit-backdrop-filter: blur(14px) saturate(1.05);
   backdrop-filter: blur(14px) saturate(1.05);
+}
+
+.home-topbar {
+  position: sticky;
+  top: 0;
   border-bottom: 1px solid rgb(27 43 68 / 0.06);
+}
+
+.home-bottombar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid rgb(27 43 68 / 0.06);
 }
 
 .home-topbar__brand {

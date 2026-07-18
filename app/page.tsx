@@ -1,4 +1,5 @@
 import Dashboard from "@/app/components/dashboard/Dashboard";
+import HomeBottomBar from "@/app/components/dashboard/HomeBottomBar";
 import HomeMuralBackground from "@/app/components/dashboard/HomeMuralBackground";
 import HomeTopBar from "@/app/components/dashboard/HomeTopBar";
 
@@ -13,6 +14,7 @@ export default function HomePage() {
       <aside className="home-page__nav" aria-label="Nawigacja">
         <Dashboard />
       </aside>
+      <HomeBottomBar />
     </div>
   );
 }
