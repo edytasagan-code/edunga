@@ -1,4 +1,4 @@
-/* Suppress global graph-paper grid on the homepage */
+/* Continuous concrete surface — no graph paper on home */
 html:has(.home-page),
 body:has(.home-page),
 html:has(.home-page) body {
@@ -7,40 +7,25 @@ html:has(.home-page) body {
 }
 
 .home-page {
-  position: relative !important;
-  display: flex !important;
-  align-items: stretch !important;
-  width: 100% !important;
-  min-height: 100dvh !important;
-  background-color: #d3cec5 !important;
-  background-image: none !important;
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+  background-color: #d3cec5;
+  background-image: none;
   isolation: isolate;
 }
 
-/* Left navigation panel (50%) */
+/* Content sits ON the mural environment — no separate right column / beige gap */
 .home-page__nav {
-  flex: 0 0 50% !important;
-  max-width: 50% !important;
+  position: relative;
   z-index: 1;
-  background: transparent !important;
-  overflow: visible !important;
+  width: min(42%, 36rem);
+  max-width: 42%;
+  background: transparent;
+  overflow: visible;
 }
 
-/* Right mural panel (50%) */
-.home-page__hero {
-  flex: 0 0 50% !important;
-  max-width: 50% !important;
-  min-width: 0 !important;
-  min-height: 100dvh !important;
-  position: relative !important;
-  z-index: 0;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center;
-  pointer-events: none;
-}
-
-/* Dashboard as nav panel content */
 .home-page .dashboard {
   position: relative;
   z-index: 1;
@@ -48,7 +33,7 @@ html:has(.home-page) body {
   overflow: visible;
   background: transparent;
   padding: 1.5rem 1.25rem 2rem;
-  color: #ffffff;
+  color: var(--edunga-ink, #1b2b44);
 }
 
 .home-page .dashboard__doodle {
@@ -71,13 +56,14 @@ html:has(.home-page) body {
   margin-bottom: 1.25rem;
 }
 
+/* Readable on warm concrete (no dark panel) */
 .home-page .dashboard__brand-name {
-  color: #ffffff;
+  color: var(--edunga-ink, #1b2b44);
 }
 
 .home-page .dashboard__brand-tagline {
   display: block;
-  color: rgb(255 255 255 / 0.55);
+  color: var(--edunga-muted, #64748b);
 }
 
 .home-page .dashboard__intro {
@@ -98,7 +84,7 @@ html:has(.home-page) body {
   margin-top: 1.25rem;
 }
 
-/* Smaller cards (dimensions only, no style changes) */
+/* Smaller cards (dimensions only) */
 .home-page .dashboard-card {
   min-height: 6.65rem;
   gap: 0.35rem;
@@ -136,24 +122,10 @@ html:has(.home-page) body {
 }
 
 @media (max-width: 719px) {
-  .home-page {
-    flex-direction: column;
-  }
-
   .home-page__nav {
-    flex: none;
-    max-width: none;
     width: 100%;
-    height: auto;
-    max-height: none;
-    position: relative;
-  }
-
-  .home-page__hero {
-    flex: none;
-    height: min(50dvh, 28rem);
-    min-height: min(50dvh, 28rem);
-    position: relative;
+    max-width: none;
+    padding-bottom: min(46dvh, 22rem);
   }
 
   .home-page .dashboard__grid {
@@ -162,23 +134,24 @@ html:has(.home-page) body {
 }
 
 @media (min-width: 720px) and (max-width: 960px) {
+  .home-page__nav {
+    width: min(48%, 28rem);
+    max-width: 48%;
+  }
+
   .home-page .dashboard__grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Full HD (1920×1080) — vertically centered nav content */
 @media (min-width: 1920px) {
-  .home-page .dashboard {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 2.5rem 2.75rem 2.5rem 3.25rem;
+  .home-page__nav {
+    width: min(40%, 38rem);
+    max-width: 40%;
   }
 
-  .home-page .dashboard__container {
-    max-width: 38rem;
+  .home-page .dashboard {
+    padding: 2.5rem 2.75rem 2.5rem 3.25rem;
   }
 
   .home-page .dashboard__header {

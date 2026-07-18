@@ -1,5 +1,9 @@
 import "./home-mural.css";
 
+/**
+ * Full-page environmental mural layer (not a separate panel image).
+ * Sits behind the nav content; soft left wash blends into #D3CEC5.
+ */
 export default function HomeMuralBackground() {
   return (
     <div className="home-mural" aria-hidden>
