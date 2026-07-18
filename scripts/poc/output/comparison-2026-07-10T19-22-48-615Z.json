@@ -1,0 +1,69 @@
+{
+  "evaluatedAt": "2026-07-10T19:22:48.619Z",
+  "imagePath": "C:\\Users\\edyta\\edunga\\scripts\\fixtures\\poc-textbook-page-1.41.png",
+  "ocr": {
+    "pipeline": "ocr-tesseract",
+    "durationMs": 3362,
+    "imagePath": "C:\\Users\\edyta\\edunga\\scripts\\fixtures\\poc-textbook-page-1.41.png",
+    "result": {
+      "rawText": "1.39. 1.41. Wykonaj działania, stosując prawo przemienności i łączności mnożenia:\nBl 5 4\na) [-12](-2,5)-32-(-6)-=-2\nEge cić\n= 1\nb) 0,375-4-/6| -— | (-0,25) (-8)\nz)»\nc) L207 Ln (-2]\nzal 7 25,5) 5\nd) EE\n2: 6\nOdp. a)-115 b)-3 c)2 d)15",
+      "detectedNumbers": [
+        "1.39",
+        "1.41"
+      ],
+      "subtaskLineCount": 4,
+      "subtaskLines": [
+        "a) [-12](-2,5)-32-(-6)-=-2",
+        "b) 0,375-4-/6| -— | (-0,25) (-8)",
+        "c) L207 Ln (-2]",
+        "d) EE"
+      ],
+      "wordCount": 43,
+      "sampleWords": [
+        "1.39.",
+        "1.41.",
+        "Wykonaj",
+        "działania,",
+        "stosując",
+        "prawo",
+        "przemienności",
+        "łączności",
+        "mnożenia:",
+        "Bl",
+        "5",
+        "4",
+        "a)",
+        "[-12](-2,5)-32-(-6)-=-2",
+        "cić",
+        "1",
+        "b)",
+        "0,375-4-/6|",
+        "(-0,25)",
+        "(-8)",
+        "z)»",
+        "c)",
+        "L207",
+        "(-2]",
+        "zal",
+        "7",
+        "25,5)",
+        "5",
+        "d)",
+        "2:",
+        "6",
+        "Odp.",
+        "a)-115",
+        "b)-3",
+        "c)2",
+        "d)15"
+      ]
+    }
+  },
+  "vision": null,
+  "visionError": "Brak OPENAI_API_KEY. Ustaw klucz w .env, aby uruchomić Vision PoC.",
+  "comparisonNotes": [
+    "Vision analyzes the page image directly — no OCR step.",
+    "OCR returns raw text only; math structure is often lost or corrupted.",
+    "Compare subtask expressions and answers for exercise 1.41."
+  ]
+}

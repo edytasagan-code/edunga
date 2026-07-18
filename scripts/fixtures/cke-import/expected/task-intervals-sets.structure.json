@@ -1,0 +1,67 @@
+{
+  "fixture": "task-intervals-sets",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Zaznacz na osi liczbowej przedziały: "
+        },
+        {
+          "type": "math",
+          "latex": "A = \\left(-4,\\,3\\,\\frac{1}{2}\\right)"
+        },
+        {
+          "type": "text",
+          "text": ", "
+        },
+        {
+          "type": "math",
+          "latex": "B = \\left(\\frac{1}{3},\\,6\\right)"
+        },
+        {
+          "type": "text",
+          "text": ". Następnie podaj:"
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "text",
+          "text": "najmniejszą liczbę naturalną, która należy do zbioru "
+        },
+        {
+          "type": "math",
+          "latex": "A \\cup B"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "1"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

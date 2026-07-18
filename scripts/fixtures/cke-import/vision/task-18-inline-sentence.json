@@ -1,0 +1,14 @@
+{
+  "identifier": "7",
+  "exerciseKind": "multiple_choice",
+  "instruction": "Dokończ zdanie. Wybierz właściwą odpowiedź spośród podanych.",
+  "question": "Rozwiązaniem równania\n\n√2\n\njest liczba",
+  "choices": [
+    { "label": "A", "text": "2" },
+    { "label": "B", "text": "3" },
+    { "label": "C", "text": "4" },
+    { "label": "D", "text": "5" }
+  ],
+  "subtasks": [],
+  "answers": [{ "label": "", "value": "C" }]
+}

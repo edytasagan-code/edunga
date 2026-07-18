@@ -1,0 +1,229 @@
+.task-editor-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.task-editor-workspace__primary {
+  min-height: 420px;
+}
+
+.task-editor-workspace__primary,
+.task-editor-workspace__sidebar,
+.task-editor-workspace__answer,
+.task-editor-workspace__solution {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.task-editor-workspace__answer {
+  flex: 0 0 auto;
+  height: 90px;
+}
+
+.task-editor-workspace__solution {
+  flex: 1 1 auto;
+  cursor: pointer;
+}
+
+.task-editor-workspace__solution-placeholder {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 8rem;
+  padding: 0.75rem 1rem;
+  border: 1px dashed #3f3f46;
+  border-radius: 0.75rem;
+  background: #18181b;
+  color: #a1a1aa;
+}
+
+.task-editor-workspace__solution-placeholder-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.task-editor-solution__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.task-editor-solution__header .task-editor-section__title {
+  margin-bottom: 0;
+}
+
+.task-editor-solution__header--draggable {
+  cursor: grab;
+  user-select: none;
+  padding: 0.15rem 0.1rem;
+  margin: -0.15rem -0.1rem 0.35rem;
+  border-radius: 0.5rem;
+}
+
+.task-editor-solution__header--draggable:active {
+  cursor: grabbing;
+}
+
+.task-editor-solution__expand {
+  flex-shrink: 0;
+  border: 1px solid #52525b;
+  border-radius: 0.5rem;
+  background: #27272a;
+  color: #f4f4f5;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+}
+
+.task-editor-solution__expand:hover {
+  background: #3f3f46;
+  border-color: #71717a;
+}
+
+.task-editor-solution__editor {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Ink canvas keeps intrinsic size so pointer ↔ stroke stay aligned. */
+.task-editor-workspace__solution .edunga-ink-node {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.task-editor-workspace__solution .edunga-ink-node__canvas {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100%;
+}
+
+.task-editor-workspace__solution--expanded {
+  position: fixed;
+  z-index: 12000;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.65rem 0.85rem 0.85rem;
+  border: 1px solid #3f3f46;
+  border-radius: 0.85rem;
+  background: #18181b;
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.45),
+    0 0 0 1px #27272a;
+  cursor: default;
+  overflow: hidden;
+}
+
+.task-editor-solution__resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 0 0 0.65rem 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0 45%,
+    #71717a 45% 52%,
+    transparent 52% 62%,
+    #71717a 62% 69%,
+    transparent 69%
+  );
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.task-editor-solution__resize-handle:hover {
+  background: linear-gradient(
+    135deg,
+    transparent 0 45%,
+    #a1a1aa 45% 52%,
+    transparent 52% 62%,
+    #a1a1aa 62% 69%,
+    transparent 69%
+  );
+}
+
+.task-editor-workspace__solution--expanded .task-editor-solution__header {
+  margin-bottom: 0.5rem;
+}
+
+.task-editor-solution__toolbar {
+  flex-shrink: 0;
+  margin-bottom: 0.65rem;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.task-editor-workspace__solution--expanded .task-editor-solution__editor,
+.task-editor-workspace__solution--expanded .edunga-editor--solution-window,
+.task-editor-workspace__solution--expanded .edunga-editor-surface {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+.task-editor-workspace__solution--expanded .edunga-ink-node {
+  max-width: none;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.task-editor-workspace__solution--expanded .edunga-ink-node__canvas {
+  max-height: none;
+}
+
+.task-editor-workspace__solution--expanded .edunga-ink-node__frame {
+  inset: 0;
+}
+
+.task-editor-section__title {
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.task-editor-toolbar {
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.task-editor-form-chrome {
+  user-select: none;
+}
+
+.task-editor-save-bar {
+  position: sticky;
+  bottom: 0;
+  margin-top: auto;
+  z-index: 10500;
+}
+
+@media (max-width: 1024px) {
+  .task-editor-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(280px, 1fr) auto minmax(200px, 1fr);
+  }
+
+  .task-editor-workspace__answer {
+    height: 90px;
+  }
+}

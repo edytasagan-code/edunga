@@ -1,5 +1,15 @@
 import { NextResponse } from "next/server";
+import { prismaErrorResponse } from "@/app/lib/api/prismaError";
 import { prisma } from "@/app/lib/prisma";
+import { allocateTaskCode } from "@/app/lib/taskCode";
+import {
+  normalizeTaskIdentifier,
+  normalizeTaskSource,
+} from "@/app/lib/taskSource";
+import {
+  parseVariantsFromBody,
+  primaryVariantFields,
+} from "@/app/lib/zadanieVariants";
 
 export async function GET() {
   try {
@@ -7,38 +17,58 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        mainTopic: {
+          select: { id: true, nazwa: true },
+        },
+        subtopic: {
+          select: { id: true, nazwa: true },
+        },
+      },
     });
 
     return NextResponse.json(zadania);
   } catch (error) {
-    console.error(error);
-
-    return NextResponse.json(
-      { error: "Błąd pobierania zadań" },
-      { status: 500 }
-    );
+    return prismaErrorResponse(error, "Błąd pobierania zadań.");
   }
 }
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const warianty = parseVariantsFromBody(body);
+    const content = primaryVariantFields(warianty);
+
+    const kod = await allocateTaskCode(prisma);
 
     const zadanie = await prisma.zadanie.create({
       data: {
-        klasaId: body.klasaId,
-        dzialId: body.dzialId,
-        tematId: body.tematId,
+        kod,
+        klasaId: body.klasaId || null,
+        dzialId: body.dzialId || null,
+        tematId: body.tematId || null,
 
-        typ: body.typ,
-        poziom: body.poziom,
+        mainTopicId: body.mainTopicId || null,
+        subtopicId: body.subtopicId || null,
+        zagadnienie:
+          typeof body.zagadnienie === "string"
+            ? body.zagadnienie.trim() || null
+            : null,
 
-        punkty: body.punkty,
-        czas: body.czas,
+        typ: body.typ || "",
+        poziom: Number(body.poziom) || 0,
 
-        tresc: body.tresc,
-        odpowiedz: body.odpowiedz,
-        rozwiazanie: body.rozwiazanie,
+        punkty: Number(body.punkty) || 0,
+        czas: Number(body.czas) || 0,
+
+        zrodlo: normalizeTaskSource(body.zrodlo) || null,
+        identyfikator:
+          normalizeTaskIdentifier(body.identyfikator) || null,
+
+        tresc: content.tresc,
+        odpowiedz: content.odpowiedz,
+        rozwiazanie: content.rozwiazanie,
+        warianty: content.warianty,
 
         tagi: body.tagi ?? [],
 

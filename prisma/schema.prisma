@@ -8,59 +8,122 @@ datasource db {
 }
 
 model Klasa {
-  id     String @id @default(cuid())
-  nazwa  String @unique
+  id         String @id @default(cuid())
+  nazwa      String @unique
+  kolejnosc  Int    @default(0)
 
   dzialy  Dzial[]
   zadania Zadanie[]
 }
 
 model Dzial {
-  id      String @id @default(cuid())
-  nazwa   String
+  id         String @id @default(cuid())
+  nazwa      String
+  kolejnosc  Int    @default(0)
 
   klasaId String
   klasa   Klasa @relation(fields: [klasaId], references: [id])
 
   tematy  Temat[]
   zadania Zadanie[]
+
+  @@unique([klasaId, nazwa])
 }
 
 model Temat {
-  id      String @id @default(cuid())
-  nazwa   String
+  id         String @id @default(cuid())
+  nazwa      String
+  kolejnosc  Int    @default(0)
 
   dzialId String
   dzial   Dzial @relation(fields: [dzialId], references: [id])
 
   zadania Zadanie[]
+
+  @@unique([dzialId, nazwa])
+}
+
+/** Curriculum-independent main topic (primary classification). */
+model MainTopic {
+  id        String @id @default(cuid())
+  nazwa     String @unique
+  kolejnosc Int    @default(0)
+
+  subtopics Subtopic[]
+  zadania   Zadanie[]
+}
+
+/** Curriculum-independent subtopic under a MainTopic. */
+model Subtopic {
+  id        String @id @default(cuid())
+  nazwa     String
+  kolejnosc Int    @default(0)
+
+  mainTopicId String
+  mainTopic   MainTopic @relation(fields: [mainTopicId], references: [id])
+
+  zadania Zadanie[]
+
+  @@unique([mainTopicId, nazwa])
 }
 
 model Zadanie {
   id String @id @default(cuid())
 
-  klasaId String
-  klasa   Klasa @relation(fields: [klasaId], references: [id])
+  /** Permanent public code, e.g. EDU-000001 */
+  kod String @unique
 
-  dzialId String
-  dzial   Dzial @relation(fields: [dzialId], references: [id])
+  /** Source program (Pazdro / Excel curriculum) — optional metadata. */
+  klasaId String?
+  klasa   Klasa? @relation(fields: [klasaId], references: [id])
 
-  tematId String
-  temat   Temat @relation(fields: [tematId], references: [id])
+  dzialId String?
+  dzial   Dzial? @relation(fields: [dzialId], references: [id])
 
-  typ String
+  tematId String?
+  temat   Temat? @relation(fields: [tematId], references: [id])
 
-  poziom Int
+  /** Primary curriculum classification (independent of textbook). */
+  mainTopicId String?
+  mainTopic   MainTopic? @relation(fields: [mainTopicId], references: [id])
 
-  punkty Int
+  subtopicId String?
+  subtopic   Subtopic? @relation(fields: [subtopicId], references: [id])
 
-  czas Int
+  /** Optional free-text detail under main topic / subtopic. */
+  zagadnienie String?
+
+  typ String @default("")
+
+  poziom Int @default(0)
+
+  punkty Int @default(0)
+
+  czas Int @default(0)
+
+  /** Task metadata — not part of document content */
+  zrodlo String?
+  identyfikator String?
+  /** Pazdro PP (profil podstawowy), e.g. 1.171 */
+  identifikatorPp String?
+  /** Pazdro PR (profil rozszerzony), e.g. 1.188 */
+  identifikatorPr String?
+
+  /** Exam year for Matura / Egzamin ósmoklasisty imports */
+  rokEgzaminu Int?
+  /** Exam session slug, e.g. maj, czerwiec, sierpien, probna */
+  sesjaEgzaminu String?
+  /** Exam level for Matura imports: pp | pr */
+  poziomEgzaminu String?
 
   tresc Json
 
   odpowiedz Json
 
   rozwiazanie Json
+
+  /** Variants A–D: [{ tresc, rozwiazanie, odpowiedz }, ...] */
+  warianty Json
 
   tagi String[]
 
@@ -70,5 +133,41 @@ model Zadanie {
 
   createdAt DateTime @default(now())
 
+  updatedAt DateTime @updatedAt
+}
+
+model Dokument {
+  id String @id @default(cuid())
+
+  /** Permanent public code, e.g. DOC-000001 */
+  kod String @unique
+
+  tytul String
+  /** kartkowka | sprawdzian */
+  typ   String
+
+  /** 1-lo, 2-lo, 3-lo, 4-lo, cross-grade, matura */
+  klasa String @default("cross-grade")
+
+  /** pp, pr, pp-pr */
+  poziom String @default("pp")
+
+  /** Optional teacher-facing description */
+  opis String?
+
+  /** DocumentDisplayOptions (without runtime group field) */
+  wyswietlanie Json
+
+  /** PrintLayoutOptions */
+  ukladWydruku Json
+
+  /** DocumentItem[] — task refs, subtasks, answer areas, order */
+  elementy Json
+
+  zarchiwizowany Boolean @default(false)
+
+  autor String @default("admin")
+
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

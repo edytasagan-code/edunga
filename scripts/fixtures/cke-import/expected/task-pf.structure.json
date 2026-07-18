@@ -1,0 +1,76 @@
+{
+  "fixture": "task-pf",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "W każdym wierszu tabeli w kolumnie I wpisz właściwą odpowiedź: P — prawda, F — fałsz. Wybierz P, jeśli stwierdzenie jest prawdziwe, albo F — jeśli jest fałszywe."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "true-false-table",
+          "layout": "cke-prawda-falsz",
+          "rows": [
+            {
+              "label": "1",
+              "statement": [
+                {
+                  "type": "text",
+                  "text": "Liczba "
+                },
+                {
+                  "type": "math",
+                  "latex": "\\sqrt{2}"
+                },
+                {
+                  "type": "text",
+                  "text": " jest większa od 1,4."
+                }
+              ]
+            },
+            {
+              "label": "2",
+              "statement": [
+                {
+                  "type": "text",
+                  "text": "Suma kątów wewnętrznych trójkąta wynosi 180°."
+                }
+              ]
+            },
+            {
+              "label": "3",
+              "statement": [
+                {
+                  "type": "text",
+                  "text": "Funkcja liniowa f(x) = 2x + 1 ma miejsce zerowe w punkcie x = 0."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "P"
+        },
+        {
+          "type": "text",
+          "text": ", P"
+        },
+        {
+          "type": "text",
+          "text": ", F"
+        }
+      ]
+    }
+  ]
+}

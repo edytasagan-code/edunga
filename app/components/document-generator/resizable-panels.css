@@ -1,0 +1,31 @@
+.resizable-panels__splitter {
+  position: relative;
+  flex: 0 0 6px;
+  margin: 0 -1px;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+}
+
+.resizable-panels__splitter::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  bottom: 12%;
+  left: 50%;
+  width: 2px;
+  border-radius: 999px;
+  background: #3f3f46;
+  transform: translateX(-50%);
+  transition: background-color 0.15s ease;
+}
+
+.resizable-panels__splitter:hover::before,
+.resizable-panels--dragging .resizable-panels__splitter::before {
+  background: #f7b500;
+}
+
+body.resizable-panels--dragging {
+  cursor: col-resize;
+  user-select: none;
+}

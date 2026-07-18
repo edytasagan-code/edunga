@@ -1,0 +1,16 @@
+{
+  "identifier": "18",
+  "exerciseKind": "true_false",
+  "instruction": "W każdym wierszu tabeli w kolumnie I wpisz właściwą odpowiedź: P — prawda, F — fałsz. Wybierz P, jeśli stwierdzenie jest prawdziwe, albo F — jeśli jest fałszywe.",
+  "subtasks": [],
+  "statements": [
+    { "label": "1", "text": "Liczba √2 jest większa od 1,4." },
+    { "label": "2", "text": "Suma kątów wewnętrznych trójkąta wynosi 180°." },
+    { "label": "3", "text": "Funkcja liniowa f(x) = 2x + 1 ma miejsce zerowe w punkcie x = 0." }
+  ],
+  "answers": [
+    { "label": "1", "value": "P" },
+    { "label": "2", "value": "P" },
+    { "label": "3", "value": "F" }
+  ]
+}

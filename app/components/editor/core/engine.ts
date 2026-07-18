@@ -7,8 +7,6 @@ import {
 import { createEmptyDocument } from "./document";
 import HistoryManager from "./history";
 import SelectionManager from "./selection";
-import insertText from "./operations/insertText";
-
 export type EditorEvent =
   | "change"
   | "selection"
@@ -150,13 +148,17 @@ export default class EditorEngine {
    * Undo.
    */
   undo(): void {
-    const previous = this.history.undo(this.document);
+    const previous = this.history.undo(this.document, null);
 
     if (!previous) {
       return;
     }
 
-    this.document = previous;
+    this.document = previous.document;
+
+    if (previous.cursor) {
+      this.selection.setCursor(previous.cursor);
+    }
 
     this.emit("history");
     this.emit("change");
@@ -166,13 +168,17 @@ export default class EditorEngine {
    * Redo.
    */
   redo(): void {
-    const next = this.history.redo(this.document);
+    const next = this.history.redo(this.document, null);
 
     if (!next) {
       return;
     }
 
-    this.document = next;
+    this.document = next.document;
+
+    if (next.cursor) {
+      this.selection.setCursor(next.cursor);
+    }
 
     this.emit("history");
     this.emit("change");

@@ -1,0 +1,55 @@
+{
+  "fixture": "task-zapisz-obliczenia",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Oblicz wartość wyrażenia."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Zapisz obliczenia."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{25}{8} + \\sqrt{2}"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "5"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

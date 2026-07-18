@@ -1,0 +1,16 @@
+{
+  "identifier": "18",
+  "exerciseKind": "multiple_choice",
+  "instruction": "Dokończ zdanie.",
+  "question": "Liczba \\(\\frac{25}{8}\\) jest równa \\(\\sqrt{2}\\) podniesionemu do potęgi",
+  "choices": [
+    { "label": "A", "text": "2^{-1}" },
+    { "label": "B", "text": "4^{12}" },
+    { "label": "C", "text": "5^{24}" },
+    { "label": "D", "text": "1" }
+  ],
+  "subtasks": [],
+  "answers": [{ "label": "", "value": "A" }],
+  "correctChoice": "A",
+  "choicesLayout": "inline"
+}

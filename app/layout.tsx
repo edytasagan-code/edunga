@@ -7,7 +7,7 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Edunga",
+  title: "EDUNGA — Panel nauczyciela",
   description: "Kiedy logika spotyka wyobraźnię.",
 };
 

@@ -1,0 +1,99 @@
+{
+  "fixture": "task-18-mc",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Dokończ zdanie."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Liczba "
+        },
+        {
+          "type": "math",
+          "latex": "\\frac{25}{8}"
+        },
+        {
+          "type": "text",
+          "text": " jest równa "
+        },
+        {
+          "type": "math",
+          "latex": "\\sqrt{2}"
+        },
+        {
+          "type": "text",
+          "text": " podniesionemu do potęgi"
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "A. "
+        },
+        {
+          "type": "math",
+          "latex": "2^{-1}"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "B. "
+        },
+        {
+          "type": "math",
+          "latex": "4^{12}"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "C. "
+        },
+        {
+          "type": "math",
+          "latex": "5^{24}"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "D. "
+        },
+        {
+          "type": "math",
+          "latex": "1"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "A"
+        }
+      ]
+    }
+  ]
+}
