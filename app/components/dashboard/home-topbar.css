@@ -1,3 +1,4 @@
+/* Same color + treatment for top and bottom chrome */
 .home-topbar,
 .home-bottombar {
   z-index: 30;
@@ -7,9 +8,10 @@
   height: 64px;
   padding: 0 1.5rem;
   box-sizing: border-box;
-  background: rgb(211 206 197 / 0.52);
+  background: #d3cec5;
   -webkit-backdrop-filter: blur(14px) saturate(1.05);
   backdrop-filter: blur(14px) saturate(1.05);
+  border: none;
 }
 
 .home-topbar {
@@ -26,25 +28,25 @@
   border-top: 1px solid rgb(27 43 68 / 0.06);
 }
 
-.home-topbar__brand {
+.home-chrome__brand {
   display: flex;
   align-items: center;
   gap: 0.7rem;
 }
 
-.home-topbar__logo {
+.home-chrome__logo {
   flex-shrink: 0;
   width: 2.35rem;
   height: 2.35rem;
 }
 
-.home-topbar__logo svg {
+.home-chrome__logo svg {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.home-topbar__name {
+.home-chrome__name {
   font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 0.08em;
