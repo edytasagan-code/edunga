@@ -10,7 +10,7 @@ export default function HomeMuralBackground() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className="home-mural__image"
-        src="/images/matematyka-mural-2.png"
+        src="/images/matematyka-mural-3.png"
         alt=""
       />
       <div className="home-mural__fade" />
