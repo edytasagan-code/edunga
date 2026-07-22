@@ -1,0 +1,91 @@
+{
+  "fixture": "task-18-inline-sentence",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Dokończ zdanie. Wybierz właściwą odpowiedź spośród podanych."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Rozwiązaniem równania "
+        },
+        {
+          "type": "math",
+          "latex": "\\sqrt{2}"
+        },
+        {
+          "type": "text",
+          "text": " jest liczba"
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "A. "
+        },
+        {
+          "type": "math",
+          "latex": "2"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "B. "
+        },
+        {
+          "type": "math",
+          "latex": "3"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "C. "
+        },
+        {
+          "type": "math",
+          "latex": "4"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "D. "
+        },
+        {
+          "type": "math",
+          "latex": "5"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "C"
+        }
+      ]
+    }
+  ]
+}

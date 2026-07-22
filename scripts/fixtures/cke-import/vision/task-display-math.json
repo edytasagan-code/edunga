@@ -1,0 +1,20 @@
+{
+  "identifier": "14",
+  "instruction": "Rozwiąż równanie.",
+  "subtasks": [
+    {
+      "label": "a",
+      "expression": "",
+      "mathElements": ["2x + 3 = 11"]
+    },
+    {
+      "label": "b",
+      "expression": "",
+      "mathElements": ["x^2 - 4 = 0"]
+    }
+  ],
+  "answers": [
+    { "label": "a", "value": "4" },
+    { "label": "b", "value": "-2, 2" }
+  ]
+}

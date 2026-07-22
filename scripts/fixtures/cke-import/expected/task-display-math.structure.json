@@ -1,0 +1,71 @@
+{
+  "fixture": "task-display-math",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Rozwiąż równanie."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "2x + 3 = 11"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "b) "
+        },
+        {
+          "type": "math",
+          "latex": "x^{2} - 4 = 0"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "a) "
+        },
+        {
+          "type": "math",
+          "latex": "4"
+        },
+        {
+          "type": "text",
+          "text": "    "
+        },
+        {
+          "type": "text",
+          "text": "b) "
+        },
+        {
+          "type": "text",
+          "text": "-2, 2"
+        }
+      ]
+    }
+  ]
+}

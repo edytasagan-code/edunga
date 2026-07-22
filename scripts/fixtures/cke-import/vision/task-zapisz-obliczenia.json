@@ -1,0 +1,13 @@
+{
+  "identifier": "15",
+  "instruction": "Oblicz wartość wyrażenia.",
+  "question": "Zapisz obliczenia.",
+  "subtasks": [
+    {
+      "label": "a",
+      "expression": "",
+      "mathElements": ["\\frac{25}{8} + \\sqrt{2}"]
+    }
+  ],
+  "answers": [{ "label": "a", "value": "5" }]
+}

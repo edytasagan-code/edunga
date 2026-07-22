@@ -1,0 +1,22 @@
+{
+  "identifier": "11",
+  "exerciseKind": "matching",
+  "instruction": "Dopasuj każde zdanie po lewej stronie tablicy z właściwą odpowiedzią po prawej stronie tablicy. Wpisz obok każdego zdania właściwą literę A, B, C lub D.",
+  "matchingItems": [
+    { "label": "1", "text": "Funkcja f(x) = 2x + 1 jest rosnąca." },
+    { "label": "2", "text": "Funkcja g(x) = -x + 3 jest malejąca." },
+    { "label": "3", "text": "Funkcja h(x) = x^2 ma dwa miejsca zerowe." }
+  ],
+  "matchingOptions": [
+    { "label": "A", "text": "funkcja jest rosnąca" },
+    { "label": "B", "text": "funkcja jest malejąca" },
+    { "label": "C", "text": "funkcja ma dwa miejsca zerowe" },
+    { "label": "D", "text": "funkcja jest stała" }
+  ],
+  "subtasks": [],
+  "answers": [
+    { "label": "1", "value": "A" },
+    { "label": "2", "value": "B" },
+    { "label": "3", "value": "C" }
+  ]
+}

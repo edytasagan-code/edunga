@@ -1,0 +1,167 @@
+{
+  "evaluatedAt": "2026-07-11T07:53:33.868Z",
+  "imagePath": "C:\\Users\\edyta\\edunga\\scripts\\fixtures\\poc-textbook-page-1.41.png",
+  "ocr": {
+    "pipeline": "ocr-tesseract",
+    "durationMs": 2819,
+    "imagePath": "C:\\Users\\edyta\\edunga\\scripts\\fixtures\\poc-textbook-page-1.41.png",
+    "result": {
+      "rawText": "1.39. 1.41. Wykonaj działania, stosując prawo przemienności i łączności mnożenia:\nBl 5 4\na) [-12](-2,5)-32-(-6)-=-2\nEge cić\n= 1\nb) 0,375-4-/6| -— | (-0,25) (-8)\nz)»\nc) L207 Ln (-2]\nzal 7 25,5) 5\nd) EE\n2: 6\nOdp. a)-115 b)-3 c)2 d)15",
+      "detectedNumbers": [
+        "1.39",
+        "1.41"
+      ],
+      "subtaskLineCount": 4,
+      "subtaskLines": [
+        "a) [-12](-2,5)-32-(-6)-=-2",
+        "b) 0,375-4-/6| -— | (-0,25) (-8)",
+        "c) L207 Ln (-2]",
+        "d) EE"
+      ],
+      "wordCount": 43,
+      "sampleWords": [
+        "1.39.",
+        "1.41.",
+        "Wykonaj",
+        "działania,",
+        "stosując",
+        "prawo",
+        "przemienności",
+        "łączności",
+        "mnożenia:",
+        "Bl",
+        "5",
+        "4",
+        "a)",
+        "[-12](-2,5)-32-(-6)-=-2",
+        "cić",
+        "1",
+        "b)",
+        "0,375-4-/6|",
+        "(-0,25)",
+        "(-8)",
+        "z)»",
+        "c)",
+        "L207",
+        "(-2]",
+        "zal",
+        "7",
+        "25,5)",
+        "5",
+        "d)",
+        "2:",
+        "6",
+        "Odp.",
+        "a)-115",
+        "b)-3",
+        "c)2",
+        "d)15"
+      ]
+    }
+  },
+  "vision": {
+    "pipeline": "vision-ai",
+    "model": "gpt-4o",
+    "durationMs": 4989,
+    "imagePath": "C:\\Users\\edyta\\edunga\\scripts\\fixtures\\poc-textbook-page-1.41.png",
+    "result": {
+      "sourcePage": "1.39",
+      "exercises": [
+        {
+          "identifier": "1.41",
+          "sectionReference": "1.39",
+          "level": "extended",
+          "instruction": "Wykonaj działania, stosując prawo przemienności i łączności mnożenia:",
+          "subtasks": [
+            {
+              "label": "a",
+              "expression": "(-1/4) * (-2,5) * 3/5 * (-6) * 4/7 * 2",
+              "mathElements": [
+                "-1/4",
+                "-2,5",
+                "3/5",
+                "-6",
+                "4/7",
+                "2"
+              ]
+            },
+            {
+              "label": "b",
+              "expression": "0,375 * 4 * sqrt(6) * (-1/sqrt(6)) * (-0,25) * (-8)",
+              "mathElements": [
+                "0,375",
+                "4",
+                "sqrt(6)",
+                "-1/sqrt(6)",
+                "-0,25",
+                "-8"
+              ]
+            },
+            {
+              "label": "c",
+              "expression": "1/21 * 25/7 * 0,7 * 1/3,5 * (-7) * (-42/5)",
+              "mathElements": [
+                "1/21",
+                "25/7",
+                "0,7",
+                "1/3,5",
+                "-7",
+                "-42/5"
+              ]
+            },
+            {
+              "label": "d",
+              "expression": "3,6 * (-1/2) * (-5/6) * 4 * 0,25",
+              "mathElements": [
+                "3,6",
+                "-1/2",
+                "-5/6",
+                "4",
+                "0,25"
+              ]
+            }
+          ],
+          "answers": [
+            {
+              "label": "a",
+              "value": "-115"
+            },
+            {
+              "label": "b",
+              "value": "-3"
+            },
+            {
+              "label": "c",
+              "value": "2"
+            },
+            {
+              "label": "d",
+              "value": "1,5"
+            }
+          ]
+        }
+      ]
+    },
+    "usage": {
+      "prompt_tokens": 844,
+      "completion_tokens": 503,
+      "total_tokens": 1347,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    }
+  },
+  "visionError": null,
+  "comparisonNotes": [
+    "Vision analyzes the page image directly — no OCR step.",
+    "OCR returns raw text only; math structure is often lost or corrupted.",
+    "Compare subtask expressions and answers for exercise 1.41."
+  ]
+}

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-700 bg-[#1E2128]/90 backdrop-blur">
+    <header className="edunga-navbar">
       <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-10">
 
         {/* LOGO */}
@@ -43,11 +43,11 @@ export default function Navbar() {
 
           <div>
 
-            <h1 className="text-4xl font-extrabold tracking-wide text-white">
+            <h1 className="text-4xl font-extrabold tracking-wide edunga-text-body">
               EDUNGA
             </h1>
 
-            <p className="mt-1 text-xs tracking-[0.25em] text-zinc-500">
+            <p className="mt-1 text-xs tracking-[0.25em] edunga-text-muted">
               KIEDY LOGIKA SPOTYKA WYOBRAŹNIĘ
             </p>
 
@@ -57,7 +57,7 @@ export default function Navbar() {
 
         {/* MENU */}
 
-        <nav className="hidden items-center gap-10 text-lg text-zinc-300 md:flex">
+        <nav className="hidden items-center gap-10 text-lg edunga-text-muted md:flex">
 
           <Link
             href="/uczen"
@@ -67,7 +67,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/nauczyciel"
+            href="/"
             className="transition hover:text-[#F7B500]"
           >
             Nauczyciel

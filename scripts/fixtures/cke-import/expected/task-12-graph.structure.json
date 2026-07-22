@@ -1,0 +1,58 @@
+{
+  "fixture": "task-12-graph",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Funkcja f jest określona następująco:"
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": ""
+        },
+        {
+          "type": "math",
+          "latex": "f(x)=\\begin{cases} x+2 & \\text{dla } x \\in [-4,2] \\\\ -x+5 & \\text{dla } x \\in (2,5) \\end{cases}"
+        },
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Wykres funkcji y=f(x) przedstawiono w kartezjańskim układzie współrzędnych (x,y) na rysunku poniżej."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "image",
+          "alt": "wykres funkcji f",
+          "hasSrc": true,
+          "width": 320,
+          "height": 220
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": ""
+        }
+      ]
+    }
+  ]
+}

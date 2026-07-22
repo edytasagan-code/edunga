@@ -1,0 +1,8 @@
+{
+  "identifier": "21",
+  "instruction": "Dany jest zbiór A = {-√2, 2.25, -1 3/4, -π/2, 3/8, √2}. Wypisz:",
+  "subtasks": [
+    { "label": "a", "text": "liczby niewymierne", "mathElements": [] }
+  ],
+  "answers": [{ "label": "a", "value": "√2; -π/2" }]
+}

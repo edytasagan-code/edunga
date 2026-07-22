@@ -1,0 +1,86 @@
+{
+  "fixture": "task-matching",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Dopasuj każde zdanie po lewej stronie tablicy z właściwą odpowiedzią po prawej stronie tablicy. Wpisz obok każdego zdania właściwą literę A, B, C lub D."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "matching-table",
+          "layout": "cke-dopasuj",
+          "options": [
+            {
+              "label": "A",
+              "text": "funkcja jest rosnąca"
+            },
+            {
+              "label": "B",
+              "text": "funkcja jest malejąca"
+            },
+            {
+              "label": "C",
+              "text": "funkcja ma dwa miejsca zerowe"
+            },
+            {
+              "label": "D",
+              "text": "funkcja jest stała"
+            }
+          ],
+          "rows": [
+            {
+              "label": "1",
+              "left": [
+                {
+                  "type": "text",
+                  "text": "Funkcja f(x) = 2x + 1 jest rosnąca."
+                }
+              ]
+            },
+            {
+              "label": "2",
+              "left": [
+                {
+                  "type": "text",
+                  "text": "Funkcja g(x) = -x + 3 jest malejąca."
+                }
+              ]
+            },
+            {
+              "label": "3",
+              "left": [
+                {
+                  "type": "text",
+                  "text": "Funkcja h(x) = x^2 ma dwa miejsca zerowe."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "1:A"
+        },
+        {
+          "type": "text",
+          "text": ", 2:B"
+        },
+        {
+          "type": "text",
+          "text": ", 3:C"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+/* Full-page mural as environment behind the UI — one continuous surface with #D3CEC5 */
+.home-mural {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: #d3cec5;
+}
+
+/*
+  Mural on the right, aligned with content height.
+  Start further right so the wash does not cover MATEMATYKA.
+*/
+.home-mural__image {
+  position: absolute;
+  top: 1.25rem;
+  right: 0;
+  bottom: 1.5rem;
+  left: 40%;
+  width: 60%;
+  height: calc(100% - 2.75rem);
+  object-fit: cover;
+  object-position: 42% center;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.35) 6%,
+    #000 18%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgb(0 0 0 / 0.35) 6%,
+    #000 18%,
+    #000 100%
+  );
+}
+
+/*
+  Concrete covers the card column; dissolve is shorter and softer
+  so it does not wash over the mural lettering.
+*/
+.home-mural__fade {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 44%;
+  background: linear-gradient(
+    to right,
+    #d3cec5 0%,
+    #d3cec5 72%,
+    rgb(211 206 197 / 0.75) 84%,
+    rgb(211 206 197 / 0.35) 93%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 719px) {
+  .home-mural__image {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: min(46dvh, 22rem);
+    object-fit: cover;
+    object-position: center 40%;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      #000 55%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to top,
+      #000 55%,
+      transparent 100%
+    );
+  }
+
+  .home-mural__fade {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: min(46dvh, 22rem);
+    background: linear-gradient(
+      to top,
+      transparent 0%,
+      transparent 55%,
+      rgb(211 206 197 / 0.45) 82%,
+      #d3cec5 100%
+    );
+  }
+}

@@ -1,70 +1,110 @@
-import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 
-import { klasy } from "../app/data/program/klasy";
-import { dzialy } from "../app/data/program/dzialy";
-import { tematy } from "../app/data/program/tematy";
+import { CURRICULUM_TOPICS } from "../app/lib/curriculum/topics";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  console.log("🌱 Seedowanie bazy...");
+const KLASY = [
+  { id: "1lo", nazwa: "Klasa 1 LO", kolejnosc: 1 },
+  { id: "2lo", nazwa: "Klasa 2 LO", kolejnosc: 2 },
+  { id: "3lo", nazwa: "Klasa 3 LO", kolejnosc: 3 },
+  { id: "4lo", nazwa: "Klasa 4 LO", kolejnosc: 4 },
+  { id: "matura", nazwa: "Matura", kolejnosc: 99 },
+] as const;
 
-  // Klasy
-  for (const klasa of klasy) {
+async function seedCurriculumTopics() {
+  console.log("Seedowanie tematów głównych (Excel: Zadania wybor pol_Edunga)...");
+
+  const keepMainIds = CURRICULUM_TOPICS.map((t) => t.id);
+  const keepSubIds = CURRICULUM_TOPICS.flatMap((t) =>
+    t.subtopics.map((s) => s.id)
+  );
+
+  // Clear FKs pointing at topics that will be removed
+  await prisma.zadanie.updateMany({
+    where: {
+      OR: [
+        { mainTopicId: { notIn: keepMainIds } },
+        { subtopicId: { notIn: keepSubIds } },
+      ],
+    },
+    data: {
+      mainTopicId: null,
+      subtopicId: null,
+    },
+  });
+
+  await prisma.subtopic.deleteMany({
+    where: { id: { notIn: keepSubIds } },
+  });
+
+  await prisma.mainTopic.deleteMany({
+    where: { id: { notIn: keepMainIds } },
+  });
+
+  for (const topic of CURRICULUM_TOPICS) {
+    await prisma.mainTopic.upsert({
+      where: { id: topic.id },
+      update: {
+        nazwa: topic.nazwa,
+        kolejnosc: topic.kolejnosc,
+      },
+      create: {
+        id: topic.id,
+        nazwa: topic.nazwa,
+        kolejnosc: topic.kolejnosc,
+      },
+    });
+
+    for (const sub of topic.subtopics) {
+      await prisma.subtopic.upsert({
+        where: { id: sub.id },
+        update: {
+          nazwa: sub.nazwa,
+          kolejnosc: sub.kolejnosc,
+          mainTopicId: topic.id,
+        },
+        create: {
+          id: sub.id,
+          nazwa: sub.nazwa,
+          kolejnosc: sub.kolejnosc,
+          mainTopicId: topic.id,
+        },
+      });
+    }
+  }
+
+  console.log(
+    `Tematy główne: ${CURRICULUM_TOPICS.length}; podtematy (tylko Ciągi): ${keepSubIds.length}.`
+  );
+}
+
+async function main() {
+  console.log("Seedowanie klas...");
+
+  for (const klasa of KLASY) {
     await prisma.klasa.upsert({
       where: { id: klasa.id },
       update: {
         nazwa: klasa.nazwa,
+        kolejnosc: klasa.kolejnosc,
       },
-      create: {
-        id: klasa.id,
-        nazwa: klasa.nazwa,
-      },
+      create: klasa,
     });
   }
 
-  // Działy
-  for (const dzial of dzialy) {
-    await prisma.dzial.upsert({
-      where: { id: dzial.id },
-      update: {
-        nazwa: dzial.nazwa,
-        klasaId: dzial.klasaId,
-      },
-      create: {
-        id: dzial.id,
-        nazwa: dzial.nazwa,
-        klasaId: dzial.klasaId,
-      },
-    });
-  }
+  await seedCurriculumTopics();
 
-  // Tematy
-  for (const temat of tematy) {
-    await prisma.temat.upsert({
-      where: { id: temat.id },
-      update: {
-        nazwa: temat.nazwa,
-        dzialId: temat.dzialId,
-      },
-      create: {
-        id: temat.id,
-        nazwa: temat.nazwa,
-        dzialId: temat.dzialId,
-      },
-    });
-  }
-
-  console.log("✅ Seed zakończony");
+  console.log(
+    "Klasy gotowe. Program Pazdro (dział/temat) importuj z Excel: npm run import-curriculum -- <plik.xlsx>"
+  );
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((error) => {
+    console.error(error);
     process.exit(1);
   })
   .finally(async () => {
     await prisma.$disconnect();
   });
-  

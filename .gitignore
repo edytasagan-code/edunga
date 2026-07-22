@@ -40,4 +40,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# import workflow temp sessions
+/.import-sessions/
+
 /app/generated/prisma
+
+# Local CoMER HWR models (download via: npm run download:comer-models)
+/public/models/comer/*.onnx
+/public/models/comer/vocab.json
+
+# ONNX Runtime WASM (copy via: npm run copy:onnx-wasm)
+/public/onnxruntime-web/

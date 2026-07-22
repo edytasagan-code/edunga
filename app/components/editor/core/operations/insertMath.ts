@@ -1,73 +1,89 @@
-import { ParagraphModel } from "../../render/DocumentRenderer";
+import { EditorDocument } from "../../types";
+import { generateId } from "../document";
 
 export type InsertMathResult = {
-  document: ParagraphModel[];
+  document: EditorDocument;
   insertedNodeId: string;
 };
 
 export default function insertMath(
-  document: ParagraphModel[],
+  document: EditorDocument,
   paragraphId: string,
   nodeId: string,
-  offset: number
+  offset: number,
+  selectionEnd?: number
 ): InsertMathResult {
-  const insertedNodeId = crypto.randomUUID();
+  const insertedNodeId = generateId();
 
-  const nextDocument = document.map((paragraph) => {
-    if (paragraph.id !== paragraphId) {
-      return paragraph;
-    }
+  const nextDocument: EditorDocument = {
+    ...document,
+    paragraphs: document.paragraphs.map((paragraph) => {
+      if (paragraph.id !== paragraphId) {
+        return paragraph;
+      }
 
-    const index = paragraph.nodes.findIndex(
-      (node) => node.id === nodeId
-    );
+      const index = paragraph.children.findIndex(
+        (node) => node.id === nodeId
+      );
 
-    if (index === -1) {
-      return paragraph;
-    }
+      if (index === -1) {
+        return paragraph;
+      }
 
-    const node = paragraph.nodes[index];
+      const node = paragraph.children[index];
 
-    if (node.type !== "text") {
-      return paragraph;
-    }
+      if (node.type !== "text") {
+        return paragraph;
+      }
 
-    const before = node.text.slice(0, offset);
-    const after = node.text.slice(offset);
+      const insertEnd =
+        selectionEnd !== undefined && selectionEnd > offset
+          ? selectionEnd
+          : offset;
 
-    const newNodes = [] as typeof paragraph.nodes;
+      const before = node.text.slice(0, offset);
+      const after = node.text.slice(insertEnd);
 
-    if (before.length > 0) {
-      newNodes.push({
-        id: crypto.randomUUID(),
-        type: "text",
-        text: before,
+      const newChildren = [] as typeof paragraph.children;
+
+      if (before.length > 0) {
+        newChildren.push({
+          id: generateId(),
+          type: "text",
+          text: before,
+        });
+      }
+
+      newChildren.push({
+        id: insertedNodeId,
+        type: "math",
+        latex: "",
       });
-    }
 
-    newNodes.push({
-      id: insertedNodeId,
-      type: "math",
-      latex: "",
-    });
+      if (after.length > 0) {
+        newChildren.push({
+          id: generateId(),
+          type: "text",
+          text: after,
+        });
+      } else {
+        newChildren.push({
+          id: generateId(),
+          type: "text",
+          text: "",
+        });
+      }
 
-    if (after.length > 0) {
-      newNodes.push({
-        id: crypto.randomUUID(),
-        type: "text",
-        text: after,
-      });
-    }
-
-    return {
-      ...paragraph,
-      nodes: [
-        ...paragraph.nodes.slice(0, index),
-        ...newNodes,
-        ...paragraph.nodes.slice(index + 1),
-      ],
-    };
-  });
+      return {
+        ...paragraph,
+        children: [
+          ...paragraph.children.slice(0, index),
+          ...newChildren,
+          ...paragraph.children.slice(index + 1),
+        ],
+      };
+    }),
+  };
 
   return {
     document: nextDocument,

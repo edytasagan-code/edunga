@@ -1,0 +1,48 @@
+.document-viewer {
+  color: inherit;
+}
+
+.document-viewer-paragraph {
+  overflow-wrap: anywhere;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.editor-document-preview {
+  color: inherit;
+}
+
+.editor-document-preview .document-viewer-paragraph {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.editor-document-preview--compact .document-viewer-paragraph {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.document-viewer--compact .document-viewer-paragraph {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.document-viewer [data-node-type="math"] .katex {
+  font-size: inherit;
+  color: inherit;
+}
+
+.document-viewer [data-node-type="ink"],
+.document-viewer .edunga-ink-readonly {
+  display: block;
+  max-width: 100%;
+  width: auto;
+  height: auto;
+}

@@ -1,0 +1,626 @@
+/* Edunga editor — paper surface + toolbar chrome */
+
+.edunga-editor-toolbar {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid #27272a;
+  border-radius: 6px;
+  background: #141414;
+  box-sizing: border-box;
+}
+
+.edunga-editor-toolbar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.edunga-toolbar-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  background: #18181b;
+  color: #e4e4e7;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.edunga-toolbar-btn__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: inherit;
+  line-height: 1;
+}
+
+.edunga-toolbar-btn:hover {
+  border-color: #52525b;
+  background: #27272a;
+  color: #fbbf24;
+}
+
+.edunga-toolbar-btn--active {
+  border-color: #f59e0b;
+  background: #f59e0b;
+  color: #18181b;
+}
+
+.edunga-toolbar-btn--active:hover {
+  border-color: #fbbf24;
+  background: #fbbf24;
+  color: #18181b;
+}
+
+/* Primary tools: handwriting, eraser — darker green outline */
+.edunga-toolbar-btn--tool {
+  border: 2px solid #15803d;
+  background: #18181b;
+  color: #e4e4e7;
+}
+
+.edunga-toolbar-btn--tool:hover {
+  border-color: #16a34a;
+  background: #1c1c1c;
+  color: #4ade80;
+}
+
+.edunga-toolbar-btn--tool.edunga-toolbar-btn--active {
+  border-color: #15803d;
+  background: #18181b;
+  color: #4ade80;
+  box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.35);
+}
+
+.edunga-toolbar-btn--tool.edunga-toolbar-btn--active:hover {
+  border-color: #16a34a;
+  background: #1c1c1c;
+  color: #86efac;
+}
+
+/* Convert ink → math: 2× width, same darker green */
+.edunga-toolbar-btn--tool-wide-dark {
+  width: 5.5rem;
+  border: 2px solid #15803d;
+  background: #18181b;
+  color: #e4e4e7;
+  font-size: 1.05rem;
+}
+
+.edunga-toolbar-btn--tool-wide-dark:hover {
+  border-color: #16a34a;
+  background: #1c1c1c;
+  color: #4ade80;
+}
+
+.edunga-toolbar-btn--tool-wide-dark.edunga-toolbar-btn--active {
+  border-color: #15803d;
+  background: #18181b;
+  color: #4ade80;
+}
+
+.edunga-toolbar-btn--swatch {
+  border-width: 2px;
+}
+
+.edunga-toolbar-btn--swatch.edunga-toolbar-btn--active {
+  box-shadow: inset 0 0 0 2px #18181b;
+}
+
+.edunga-editor-shortcuts-help {
+  margin: 2px 0 0;
+  padding: 0 2px;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  color: #71717a;
+  user-select: none;
+}
+
+.edunga-editor-surface {
+  background: #ffffff;
+  color: #000000;
+  caret-color: #000000;
+}
+
+.edunga-editor-surface ::selection {
+  background: #b3d4fc;
+  color: #000000;
+}
+
+.edunga-editor-surface [data-node-type="text"] {
+  color: #000000;
+  caret-color: #000000;
+}
+
+.edunga-editor-surface [data-node-type="text"]::selection {
+  background: #b3d4fc;
+  color: #000000;
+}
+
+.edunga-editor-surface [data-node-type="math"] math-field {
+  color: #000000;
+  --primary: #000000;
+  --secondary: #000000;
+  --placeholder-color: rgba(37, 99, 235, 0.55);
+  --placeholder-opacity: 1;
+  border: 1px solid rgba(37, 99, 235, 0.35);
+  border-radius: 4px;
+  padding: 0 1px;
+  outline: none;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.edunga-editor-surface [data-node-type="math"] math-field:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+.edunga-editor-surface
+  [data-node-type="math"]
+  math-field::part(virtual-keyboard-toggle),
+.edunga-editor-surface
+  [data-node-type="math"]
+  math-field::part(menu-toggle) {
+  display: none !important;
+}
+
+.edunga-editor-surface
+  [data-node-type="math"]
+  math-field::part(prompt) {
+  font-family: KaTeX_Main, "Times New Roman", serif;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.edunga-editor-surface[data-select-all="true"]
+  [data-node-type="text"],
+.edunga-editor-surface[data-select-all="true"]
+  [data-node-type="math"],
+.edunga-editor-surface[data-select-all]
+  [data-node-type="text"],
+.edunga-editor-surface[data-select-all]
+  [data-node-type="math"] {
+  background: #dbeafe;
+  border-radius: 2px;
+}
+
+.edunga-editor-surface
+  [data-node-type="text"].is-selected,
+.edunga-editor-surface
+  [data-node-type="math"].is-selected,
+.edunga-editor-surface
+  [data-node-type="text"].is-range-selected,
+.edunga-editor-surface
+  [data-node-type="math"].is-range-selected {
+  background: #dbeafe;
+  border-radius: 2px;
+}
+
+.edunga-editor-surface [data-node-type="image"].is-selected,
+.edunga-editor-surface
+  [data-node-type="image"].is-range-selected {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.edunga-image-node {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+  margin: 0.25rem 0;
+}
+
+.edunga-image-node__img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.edunga-image-align-left {
+  display: inline-block;
+}
+
+.edunga-image-align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edunga-image-align-right {
+  display: block;
+  margin-left: auto;
+}
+
+.edunga-image-node__frame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #2563eb;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.edunga-image-node__resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #2563eb;
+  border-radius: 2px;
+  background: #ffffff;
+  cursor: nwse-resize;
+  padding: 0;
+}
+
+.edunga-ink-node {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+  margin: 0.25rem 0;
+}
+
+.edunga-ink-node__canvas {
+  display: block;
+  max-width: 100%;
+  touch-action: none;
+}
+
+.edunga-ink-node.is-drawing .edunga-ink-node__canvas {
+  /* Small pen-tip dot (hotspot at tip center). */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='2.5' fill='%231e293b'/%3E%3C/svg%3E")
+      8 8,
+    auto;
+}
+
+.edunga-ink-node.is-erasing .edunga-ink-node__canvas {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='5' fill='none' stroke='%2371717a' stroke-width='1.5'/%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%2371717a'/%3E%3C/svg%3E")
+      10 10,
+    auto;
+}
+
+.edunga-ink-color-palette {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.edunga-ink-color-swatch {
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.edunga-ink-color-swatch.is-active {
+  border-color: #facc15;
+  box-shadow: 0 0 0 1px #18181b;
+}
+
+.edunga-ink-color-swatch:hover {
+  transform: scale(1.08);
+}
+
+.edunga-ink-align-left {
+  display: inline-block;
+}
+
+.edunga-ink-align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edunga-ink-align-right {
+  display: block;
+  margin-left: auto;
+}
+
+.edunga-ink-node__frame {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #2563eb;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.edunga-ink-node__resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #2563eb;
+  border-radius: 2px;
+  background: #ffffff;
+  cursor: nwse-resize;
+  padding: 0;
+}
+
+.edunga-ink-readonly {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.edunga-ink-readonly-align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edunga-ink-readonly-align-right {
+  display: block;
+  margin-left: auto;
+}
+
+.edunga-editor-surface.edunga-editor-drag-over {
+  outline: 2px dashed #2563eb;
+  outline-offset: -4px;
+}
+
+.edunga-ink-node.is-stroke-selecting .edunga-ink-node__canvas {
+  cursor: crosshair;
+}
+
+.edunga-ink-math-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 13000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.edunga-ink-math-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.edunga-ink-math-dialog__panel {
+  position: relative;
+  z-index: 1;
+  width: min(52rem, 100%);
+  max-height: min(94vh, 52rem);
+  overflow: auto;
+  padding: 1.1rem 1.25rem 1.25rem;
+  border: 1px solid #3f3f46;
+  border-radius: 0.85rem;
+  background: #18181b;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  color: #f4f4f5;
+}
+
+.edunga-ink-math-dialog__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas:
+    "write preview"
+    "latex latex";
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+.edunga-ink-math-dialog__write-col {
+  grid-area: write;
+  min-width: 0;
+}
+
+.edunga-ink-math-dialog__preview-col {
+  grid-area: preview;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.edunga-ink-math-dialog__latex-col {
+  grid-area: latex;
+  min-width: 0;
+}
+
+@media (max-width: 800px) {
+  .edunga-ink-math-dialog__layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "write"
+      "preview"
+      "latex";
+  }
+}
+
+.edunga-ink-math-dialog__write-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.edunga-ink-math-dialog__tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.edunga-ink-math-dialog__tool {
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid #52525b;
+  border-radius: 0.5rem;
+  background: #27272a;
+  color: #f4f4f5;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.edunga-ink-math-dialog__tool.is-active {
+  border-color: #eab308;
+  background: #eab308;
+  color: #18181b;
+}
+
+.edunga-ink-math-dialog__canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  border-radius: 0.65rem;
+  touch-action: none;
+  cursor: crosshair;
+  background: #ffffff;
+}
+
+.edunga-ink-math-dialog__canvas.is-drawing {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='2.5' fill='%231e293b'/%3E%3C/svg%3E")
+      8 8,
+    auto;
+}
+
+.edunga-ink-math-dialog__canvas.is-erasing {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='5' fill='none' stroke='%2371717a' stroke-width='1.5'/%3E%3Ccircle cx='10' cy='10' r='1.5' fill='%2371717a'/%3E%3C/svg%3E")
+      10 10,
+    auto;
+}
+
+.edunga-ink-math-dialog__canvas-hint,
+.edunga-ink-math-dialog__preview-empty {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+.edunga-ink-math-dialog__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.edunga-ink-math-dialog__hint {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+  line-height: 1.45;
+}
+
+.edunga-ink-math-dialog__status {
+  margin: 0 0 0.75rem;
+  color: #facc15;
+  font-size: 0.875rem;
+}
+
+.edunga-ink-math-dialog__error {
+  margin: 0 0 0.75rem;
+  color: #fca5a5;
+  font-size: 0.875rem;
+}
+
+.edunga-ink-math-dialog__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #d4d4d8;
+}
+
+.edunga-ink-math-dialog__latex {
+  width: 100%;
+  margin-bottom: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #3f3f46;
+  border-radius: 0.5rem;
+  background: #09090b;
+  color: #f4f4f5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.edunga-ink-math-dialog__preview {
+  flex: 1 1 auto;
+  min-height: 12rem;
+  margin-bottom: 0;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid #3f3f46;
+  border-radius: 0.65rem;
+  background: #ffffff;
+  color: #18181b;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edunga-ink-math-dialog__katex {
+  font-size: 1.45em;
+  line-height: 1.45;
+}
+
+.edunga-ink-math-dialog__preview-error {
+  color: #b91c1c;
+  font-size: 0.875rem;
+}
+
+.edunga-ink-math-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.edunga-ink-math-dialog__btn {
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+}
+
+.edunga-ink-math-dialog__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.edunga-ink-math-dialog__btn--secondary {
+  border: 1px solid #52525b;
+  background: #27272a;
+  color: #f4f4f5;
+}
+
+.edunga-ink-math-dialog__btn--primary {
+  border: 1px solid #ca8a04;
+  background: #eab308;
+  color: #18181b;
+}

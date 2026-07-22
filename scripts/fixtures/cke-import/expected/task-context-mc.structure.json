@@ -1,0 +1,87 @@
+{
+  "fixture": "task-context-mc",
+  "tresc": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Anna wpłaciła na lokatę kwotę 2000 zł. Oprocentowanie lokaty wynosi 4% w skali roku, a odsetki kapitalizowane są co roku."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Dokończ zadanie. Wybierz właściwą odpowiedź spośród podanych."
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "Po dwóch latach oszczędzania na lokacie Anna będzie miała (zgodnie z zaokrągleniem do 1 grosza)"
+        }
+      ]
+    },
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "A. "
+        },
+        {
+          "type": "text",
+          "text": "2081,60 zł"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "B. "
+        },
+        {
+          "type": "text",
+          "text": "2160,00 zł"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "C. "
+        },
+        {
+          "type": "text",
+          "text": "2163,20 zł"
+        },
+        {
+          "type": "text",
+          "text": "                        "
+        },
+        {
+          "type": "text",
+          "text": "D. "
+        },
+        {
+          "type": "text",
+          "text": "2240,00 zł"
+        }
+      ]
+    }
+  ],
+  "odpowiedz": [
+    {
+      "nodes": [
+        {
+          "type": "text",
+          "text": "C"
+        }
+      ]
+    }
+  ]
+}

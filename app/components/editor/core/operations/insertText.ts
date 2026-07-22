@@ -1,36 +1,40 @@
-import { ParagraphModel } from "../../render/DocumentRenderer";
+import { EditorDocument } from "../../types";
+import { generateId } from "../document";
 
 export default function insertText(
-  document: ParagraphModel[],
+  document: EditorDocument,
   paragraphId: string,
   afterNodeId: string
-): ParagraphModel[] {
-  return document.map((paragraph) => {
-    if (paragraph.id !== paragraphId) {
-      return paragraph;
-    }
+): EditorDocument {
+  return {
+    ...document,
+    paragraphs: document.paragraphs.map((paragraph) => {
+      if (paragraph.id !== paragraphId) {
+        return paragraph;
+      }
 
-    const index = paragraph.nodes.findIndex(
-      (node) => node.id === afterNodeId
-    );
+      const index = paragraph.children.findIndex(
+        (node) => node.id === afterNodeId
+      );
 
-    if (index === -1) {
-      return paragraph;
-    }
+      if (index === -1) {
+        return paragraph;
+      }
 
-    const textNode = {
-      id: crypto.randomUUID(),
-      type: "text" as const,
-      text: "",
-    };
+      const textNode = {
+        id: generateId(),
+        type: "text" as const,
+        text: "",
+      };
 
-    return {
-      ...paragraph,
-      nodes: [
-        ...paragraph.nodes.slice(0, index + 1),
-        textNode,
-        ...paragraph.nodes.slice(index + 1),
-      ],
-    };
-  });
+      return {
+        ...paragraph,
+        children: [
+          ...paragraph.children.slice(0, index + 1),
+          textNode,
+          ...paragraph.children.slice(index + 1),
+        ],
+      };
+    }),
+  };
 }

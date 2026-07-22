@@ -1,0 +1,13 @@
+{
+  "diagnosedAt": "2026-07-14T16:15:00.000Z",
+  "pdfPath": "C:\\Users\\edyta\\Dropbox\\Mój komputer (LAPTOP-CIN5IPK8)\\Downloads\\matematyka-2026-maj-matura-podstawowa.pdf",
+  "sessionId": "3c5581e7-229b-4c2d-a4d5-f6a86d6b7834",
+  "target": "18",
+  "symptomFirstFailure": {
+    "beginningTextLost": "NOT in Vision path when context field is populated (Stage 1 OK). pdf-text fallback (extractionMethod pdf-text) fragments heading vs body but keeps words.",
+    "inlineLatexNotMathNodes": "Stage 3 visionInlineMath.ts when Vision returns \\(...\\) delimiters in text fields (Stage 1 non-determinism). Plain-text Vision output parses correctly.",
+    "imageChangesTextOrder": "Stage 3 buildTaskDocument() — anchor after_instruction appended after ALL body paragraphs, not after instruction paragraph.",
+    "answerChoicesStructureLost": "Stage 3 when \\(...\\) fractions are shredded; pdf-text fallback also breaks fractions and appends OCR garbage.",
+    "instructionDuplicated": "Stage 4 Preview UI — card title Zadanie 18 plus tresc prefix Zadanie 18. from formatCkeNumberingPrefix."
+  }
+}
